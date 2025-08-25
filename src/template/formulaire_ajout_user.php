@@ -34,7 +34,7 @@
 </head>
 <body>
     <h1>Ajouter un utilisateur</h1>
-    <form action="traiter_ajout_utilisateur.php" method="post">
+    <form action="traiter_ajout_user.php" method="post">
         <input type="text" name="nom" placeholder="Nom" required>
         <input type="text" name="prenom" placeholder="Prénom" required>
         <input type="email" name="email" placeholder="Email" required>

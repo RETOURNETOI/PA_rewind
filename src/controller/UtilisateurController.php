@@ -1,7 +1,7 @@
 <?php
 // controller/UtilisateurController.php
-require_once __DIR__ . '/../bdd/Connexion.php';
-require_once __DIR__ . '/../model/Utilisateur.php';
+require_once '../bdd/Connexion.php';
+require_once '../model/Utilisateur.php';
 
 class UtilisateurController
 {

@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Chemins corrigés
+// Inclure le contrôleur
 require_once __DIR__ . '/../controller/UtilisateurController.php';
 
 // Récupération des données du formulaire
@@ -16,12 +16,19 @@ $data = [
     'role' => $_POST['role'] ?? 'client',
 ];
 
+// Afficher les données reçues pour le débogage
+echo "<h2>Données reçues :</h2>";
+echo "<pre>";
+print_r($data);
+echo "</pre>";
+
 // Instanciation du contrôleur
 $controller = new UtilisateurController();
 
 // Appel de la méthode ajouter
 $resultat = $controller->ajouter($data);
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
