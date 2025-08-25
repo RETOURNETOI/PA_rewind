@@ -34,7 +34,12 @@ class Connexion
             } catch (PDOException $e) {
                 die("Erreur de connexion à la base de données : " . $e->getMessage());
             }
+            
+
         }
+    
         return $this->pdo;
+        
     }
+    
 }
