@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 // index.php - Page d'accueil
 session_start();
@@ -362,3 +363,5 @@ $pageDescription = 'Vivez une aventure unique sur la Loire ! Découvrez nos circ
     </script>
  </body>
  </html>
+=======
+>>>>>>> 710c7e157f8db4bd932346c47b01e548cb1d6e29
