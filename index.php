@@ -154,13 +154,19 @@ $pageDescription = 'Vivez une aventure unique sur la Loire ! Découvrez nos circ
                 ?>
                     <div class="route-card">
                         <div class="route-image">
-                            <?php if ($point['image']): ?>
+                            <?php if (!empty($point['image'])): ?>
                                 <img src="<?= UPLOADS_URL ?>/points/<?= escape($point['image']) ?>" 
                                      alt="<?= escape($point['nom']) ?>" loading="lazy">
                             <?php else: ?>
-                                <div class="accommodation-meta">
-                                <span class="accommodation-capacity">👥 <?= $hebergement['capacite'] ?> pers.</span>
-                                <a href="/hebergement/<?= $hebergement['id_hebergement'] ?>" class="btn btn-small">Voir</a>
+                                <div class="route-placeholder">📍</div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="route-content">
+                            <h3><?= escape($point['nom']) ?></h3>
+                            <p><?= escape(substr((string)$point['description'], 0, 100)) ?>...</p>
+                            <div class="route-meta">
+                                <span class="route-order">Étape <?= (int)$point['ordre_parcours'] ?></span>
+                                <a href="/point/<?= (int)$point['id_point'] ?>" class="btn btn-small">Découvrir</a>
                             </div>
                         </div>
                     </div>
@@ -354,51 +360,5 @@ $pageDescription = 'Vivez une aventure unique sur la Loire ! Découvrez nos circ
             }
         });
     </script>
-</body>
-</html>="route-placeholder">📍</div>
-                            <?php endif; ?>
-                        </div>
-                        <div class="route-content">
-                            <h3><?= escape($point['nom']) ?></h3>
-                            <p><?= escape(substr($point['description'], 0, 100)) ?>...</p>
-                            <div class="route-meta">
-                                <span class="route-order">Étape <?= $point['ordre_parcours'] ?></span>
-                                <a href="/point/<?= $point['id_point'] ?>" class="btn btn-small">Découvrir</a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section Hébergements récents -->
-    <section class="recent-accommodations">
-        <div class="container">
-            <div class="section-header">
-                <h2>Derniers hébergements ajoutés</h2>
-                <a href="/hebergements" class="btn btn-outline">Voir tous les hébergements</a>
-            </div>
-            
-            <div class="accommodations-grid">
-                <?php foreach ($hebergementsRecents as $hebergement): ?>
-                    <div class="accommodation-card">
-                        <div class="accommodation-image">
-                            <?php if ($hebergement['image']): ?>
-                                <img src="<?= UPLOADS_URL ?>/hebergements/<?= escape($hebergement['image']) ?>" 
-                                     alt="<?= escape($hebergement['nom']) ?>" loading="lazy">
-                            <?php else: ?>
-                                <div class="accommodation-placeholder">🏨</div>
-                            <?php endif; ?>
-                            <div class="accommodation-price">
-                                <?= formatPrice($hebergement['prix_base']) ?><span>/nuit</span>
-                            </div>
-                        </div>
-                        <div class="accommodation-content">
-                            <h3><?= escape($hebergement['nom']) ?></h3>
-                            <p class="accommodation-location">📍 <?= escape($hebergement['point_nom']) ?></p>
-                            <p class="accommodation-description">
-                                <?= escape(substr($hebergement['description'], 0, 80)) ?>...
-                            </p>
-                            <div class
-                            
+ </body>
+ </html>
