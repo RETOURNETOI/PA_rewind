@@ -1,8 +1,20 @@
 <?php
 declare(strict_types=1);
 
-// Récupération du chemin demandé (sans query string)
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
+
+// Récupère le chemin "base" (public)
+$basePath = '/PA_rewind/public';
+
+// Supprime le préfixe /PA_rewind/public
+if (strpos($uri, $basePath) === 0) {
+    $uri = substr($uri, strlen($basePath));
+}
+
+// Si après ça $uri est vide, on est à la racine "/"
+if ($uri === '' || $uri === false) {
+    $uri = '/';
+}
 
 // --- Table de redirections (301) ---
 $redirects = [
@@ -10,21 +22,19 @@ $redirects = [
     '/vieux-lien'    => '/nouveau-lien',
 ];
 
-// Si l’URL correspond à une redirection, on renvoie vers la nouvelle
 if (isset($redirects[$uri])) {
     header("Location: {$redirects[$uri]}", true, 301);
     exit;
 }
 
 // --- Routing basique ---
-var_dump($uri);
 switch ($uri) {
     case '/':
-        require '../src/template/home.php';
+        require __DIR__ . '/../src/template/home.php';
         break;
 
     case '/contact':
-        require '../template/contact.php';
+        require __DIR__ . '/../template/contact.php';
         break;
 
     default:
