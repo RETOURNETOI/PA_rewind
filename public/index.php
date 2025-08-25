@@ -1,43 +1,47 @@
 <?php
 declare(strict_types=1);
 
+// --- Chemin de base ---
+define('BASE_PATH', '/PA_rewind/public');
+
+// --- Récupère l’URI demandée ---
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 
-// Récupère le chemin "base" (public)
-$basePath = '/PA_rewind/public';
-
-// Supprime le préfixe /PA_rewind/public
-if (strpos($uri, $basePath) === 0) {
-    $uri = substr($uri, strlen($basePath));
+// Retire le préfixe BASE_PATH
+if (strpos($uri, BASE_PATH) === 0) {
+    $uri = substr($uri, strlen(BASE_PATH));
 }
 
-// Si après ça $uri est vide, on est à la racine "/"
-if ($uri === '' || $uri === false) {
+// Normalisation : vide ou index.php → racine
+if ($uri === '' || $uri === '/index.php') {
     $uri = '/';
 }
 
-// --- Table de redirections (301) ---
+// --- Table de redirections ---
 $redirects = [
     '/ancienne-page' => '/nouvelle-page',
-    '/vieux-lien'    => '/nouveau-lien',
 ];
-
 if (isset($redirects[$uri])) {
-    header("Location: {$redirects[$uri]}", true, 301);
+    header("Location: " . BASE_PATH . $redirects[$uri], true, 301);
     exit;
 }
 
-// --- Routing basique ---
+// --- Router ---
 switch ($uri) {
     case '/':
         require __DIR__ . '/../src/template/home.php';
         break;
 
-    case '/contact':
-        require __DIR__ . '/../template/contact.php';
+    case '/connexion':
+        require __DIR__ . '/../src/template/connexion.php';
+        break;
+
+    case '/inscription':
+        require __DIR__ . '/../src/template/inscription.php';
         break;
 
     default:
-        phpinfo(INFO_MODULES);
+        http_response_code(404);
+        echo "<h1>404 - Page introuvable</h1><p>URI = $uri</p>";
         break;
 }
