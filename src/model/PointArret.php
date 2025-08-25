@@ -1,0 +1,37 @@
+<?php
+
+class PointArret
+{
+    private int $id_point;
+    private string $nom;
+    private ?string $description;
+    private ?float $latitude;
+    private ?float $longitude;
+
+    public function __construct(
+        ?string $nom = null,
+        ?string $description = null,
+        ?float $latitude = null,
+        ?float $longitude = null
+    ) {
+        $this->nom = $nom ?? '';
+        $this->description = $description;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+    }
+
+    public function getIdPoint(): int { return $this->id_point; }
+    public function setIdPoint(int $id): void { $this->id_point = $id; }
+
+    public function getNom(): string { return $this->nom; }
+    public function setNom(string $nom): void { $this->nom = $nom; }
+
+    public function getDescription(): ?string { return $this->description; }
+    public function setDescription(?string $desc): void { $this->description = $desc; }
+
+    public function getLatitude(): ?float { return $this->latitude; }
+    public function setLatitude(?float $lat): void { $this->latitude = $lat; }
+
+    public function getLongitude(): ?float { return $this->longitude; }
+    public function setLongitude(?float $lng): void { $this->longitude = $lng; }
+}
