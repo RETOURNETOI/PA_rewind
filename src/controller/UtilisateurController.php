@@ -64,7 +64,7 @@ class UtilisateurController
         return $result ?: null;
     }
 
-    public function AfficherparNom(int $nom): ?array
+    public function AfficherparNom(string $nom): ?array
     {
         $sql = "SELECT * FROM UTILISATEUR WHERE nom = :nom";
         $stmt = $this->pdo->prepare($sql);
