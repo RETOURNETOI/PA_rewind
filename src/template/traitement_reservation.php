@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../controller/HebergementController.php';
+require_once __DIR__.'/../controller/HebergementController.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: connexion.php");
@@ -34,7 +34,7 @@ try {
     exit;
     if ($reserverOk) {
         // ✅ Réservation réussie, redirection vers mes_reservations
-        header("Location: mes_reservations.php");
+        header("Location: " . BASE_PATH . "/mes_reservations");
         exit;
     } else {
         // ❌ Échec réservation : affiche l'erreur PDO pour debug

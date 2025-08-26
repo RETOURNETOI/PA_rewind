@@ -20,9 +20,8 @@ if (!isset($_GET['id_hebergement'])) {
 </head>
 <body>
     <h1>Réserver un Hébergement</h1>
-    <form action="traitement_reservation.php" method="post">
+    <form action="<?= BASE_PATH ?>/traitement_reservation" method="post">
         <input type="hidden" name="id_hebergement" value="<?= htmlspecialchars($_GET['id_hebergement']) ?>">
-        
         <input type="hidden" name="id_utilisateur" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
         <label for="date_debut">Date de début:</label>
         <input type="date" id="date_debut" name="date_debut" required>

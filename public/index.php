@@ -74,6 +74,10 @@ switch ($uri) {
         require '../src/template/mes_reservation.php';
         break;
 
+        case '/traitement_reservation':
+            require '../src/template/traitement_reservation.php';
+            break;
+
     default:
         http_response_code(404);
         echo "<h1>404 - Page introuvable</h1><p>URI = $uri</p>";
