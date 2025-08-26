@@ -1,56 +1,64 @@
 <?php
-require_once "Pack.php";
+require_once '../bdd/Connexion.php';
+require_once '../model/Pack.php';
 
 class PackController
 {
-    private PDO $db;
-    public function __construct(PDO $db){ $this->db = $db; }
+    private PDO $pdo;
+    public function __construct(){ 
+        $this->pdo = (new Connexion())->getPDO(); 
+    }
 
-    public function ajouter(Pack $p): bool
-    {
-        $sql = "INSERT INTO PACK (nom, description, prix) VALUES (:nom, :desc, :prix)";
-        $stmt = $this->db->prepare($sql);
+    public function ajouter(Pack $pack): bool {
+        $sql = "INSERT INTO PACK (nom, description, prix) VALUES (:nom, :description, :prix)";
+        $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
-            ':nom'=>$p->getNom(),
-            ':desc'=>$p->getDescription(),
-            ':prix'=>$p->getPrix()
+            ':nom' => $pack->getNom(),
+            ':description' => $pack->getDescription(),
+            ':prix' => $pack->getPrix()
         ]);
     }
 
-    public function getById(int $id): ?Pack
+    public function getById(int $id): ?array
     {
-        $stmt = $this->db->prepare("SELECT * FROM PACK WHERE id_pack=:id");
+        $stmt = $this->pdo->prepare("SELECT * FROM PACK WHERE id_pack=:id");
         $stmt->execute([':id'=>$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!$row) return null;
-        return new Pack($row['nom'], $row['description'], $row['prix']);
+        return $row ?: null;
     }
 
-    public function update(Pack $p): bool
+    public function getByNom(string $nom): ?array
     {
-        $sql = "UPDATE PACK SET nom=:nom, description=:desc, prix=:prix WHERE id_pack=:id";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
-            ':nom'=>$p->getNom(),
-            ':desc'=>$p->getDescription(),
-            ':prix'=>$p->getPrix(),
-            ':id'=>$p->getIdPack()
-        ]);
+        $stmt = $this->pdo->prepare("SELECT * FROM PACK WHERE nom=:nom");
+        $stmt->execute([':nom'=>$nom]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        try{
+            $set=[]; $p=[':id'=>$id];
+            if(isset($data['nom'])){ $set[]="nom=:nom"; $p[':nom']=$data['nom']; }
+            if(array_key_exists('description',$data)){ $set[]="description=:desc"; $p[':desc']=$data['description']; }
+            if(isset($data['prix'])){ $set[]="prix=:prix"; $p[':prix']=$data['prix']; }
+            if(!$set) throw new Exception("Aucun champ à mettre à jour.");
+            $sql="UPDATE PACK SET ".implode(', ',$set)." WHERE id_pack=:id";
+            return $this->pdo->prepare($sql)->execute($p);
+        }catch(Exception $e){ error_log($e->getMessage()); return false; }
     }
 
     public function delete(int $id): bool
     {
-        $stmt = $this->db->prepare("DELETE FROM PACK WHERE id_pack=:id");
-        return $stmt->execute([':id'=>$id]);
+        try{
+            $stmt=$this->pdo->prepare("DELETE FROM PACK WHERE id_pack=:id");
+            return $stmt->execute([':id'=>$id]);
+        }catch(Exception $e){ error_log($e->getMessage()); return false; }
     }
 
     public function getAll(): array
     {
-        $stmt = $this->db->query("SELECT * FROM PACK");
-        $list = [];
-        while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-            $list[] = new Pack($row['nom'],$row['description'],$row['prix']);
-        }
-        return $list;
+        $stmt = $this->pdo->query("SELECT * FROM PACK ORDER BY id_pack DESC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
