@@ -27,6 +27,22 @@
         .welcome-message h1 {
             color: #333;
         }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -42,8 +58,11 @@
             }
             ?>
             <p>Vous êtes maintenant connecté.</p>
+            <a href="choisir_hebergement.php" class="btn">Faire une réservation</a>
+
+            <a href="ajouter_hebergement.php" class="btn">Faire une réservation</a>
+            <a href="mes_reservation.php" class="btn">mes réservation</a>
         </div>
-        <!-- Ajoute ici le contenu spécifique de ton tableau de bord -->
     </div>
 </body>
 </html>

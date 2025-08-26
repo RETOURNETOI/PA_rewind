@@ -6,6 +6,9 @@ class HebergementController
 {
     private PDO $pdo;
     public function __construct(){ $this->pdo = (new Connexion())->getPDO(); }
+    public function getPDO(): PDO {
+        return $this->pdo;
+    }
 
     public function ajouter(array $data): bool
     {
@@ -13,7 +16,7 @@ class HebergementController
             foreach(['id_point','nom','type','capacite','prix_nuit'] as $k)
                 if(!isset($data[$k])) throw new Exception("Champ requis: $k");
             $sql="INSERT INTO HEBERGEMENT (id_point, nom, type, capacite, prix_nuit, description)
-                  VALUES (:pid, :nom, :type, :cap, :prix, :desc)";
+                VALUES (:pid, :nom, :type, :cap, :prix, :desc)";
             return $this->pdo->prepare($sql)->execute([
                 ':pid'=>$data['id_point'],
                 ':nom'=>$data['nom'],
@@ -65,7 +68,7 @@ class HebergementController
     public function getAll(): array
     {
         return $this->pdo->query("SELECT * FROM HEBERGEMENT ORDER BY id_hebergement DESC")
-                         ->fetchAll(PDO::FETCH_ASSOC);
+                        ->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /** Vérification simple : capacité + chevauchement d’intervalle pour le même hébergement
@@ -79,12 +82,84 @@ class HebergementController
             if($nb_personnes > (int)$heb['capacite']) return false;
 
             $sql="SELECT 1 FROM COMMANDE_HEBERGEMENT
-                  WHERE id_hebergement=:h
+                    WHERE id_hebergement=:h
                     AND NOT (date_fin <= :debut OR date_debut >= :fin)
-                  LIMIT 1";
+                    LIMIT 1";
             $st=$this->pdo->prepare($sql);
             $st->execute([':h'=>$id_hebergement, ':debut'=>$date_debut, ':fin'=>$date_fin]);
             return $st->fetch() ? false : true;
         }catch(Exception $e){ error_log($e->getMessage()); return false; }
     }
+
+
+
+    public function reserver(int $id_hebergement, int $id_utilisateur, string $date_debut, string $date_fin, int $nb_personnes): bool
+    {
+        try {
+            // Vérifie disponibilité
+            if (!$this->estDisponible($id_hebergement, $date_debut, $date_fin, $nb_personnes)) {
+                throw new Exception("Hébergement non disponible.");
+            }
+
+            // Insère la réservation
+            $sql = "INSERT INTO COMMANDE_HEBERGEMENT 
+                    (id_hebergement, id_utilisateur, date_debut, date_fin, nb_personnes)
+                    VALUES (:id_hebergement, :id_utilisateur, :date_debut, :date_fin, :nb_personnes)";
+
+            $stmt = $this->pdo->prepare($sql);
+            $result = $stmt->execute([
+                ':id_hebergement' => $id_hebergement,
+                ':id_utilisateur' => $id_utilisateur,
+                ':date_debut' => $date_debut,
+                ':date_fin' => $date_fin,
+                ':nb_personnes' => $nb_personnes
+            ]);
+
+            if (!$result) {
+                echo "Erreur PDO :<br>";
+                print_r($stmt->errorInfo());
+                exit;
+            }
+
+            return $result;
+
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+
+    // Dans HebergementController.php
+    public function getReservationsByUser(int $id_utilisateur): array
+    {
+        try {
+            $sql = "SELECT ch.*, h.nom as hebergement_nom 
+                    FROM COMMANDE_HEBERGEMENT ch
+                    JOIN HEBERGEMENT h ON ch.id_hebergement = h.id_hebergement
+                    WHERE ch.id_utilisateur = :id_utilisateur
+                    ORDER BY ch.date_debut DESC";
+            $st = $this->pdo->prepare($sql);
+            $st->execute([':id_utilisateur' => $id_utilisateur]);
+            return $st->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return [];
+        }
+    }
+
+    // Dans HebergementController.php
+    public function annulerReservation(int $id_commande): bool
+    {
+        try {
+            $sql = "DELETE FROM COMMANDE_HEBERGEMENT WHERE id_commande = :id_commande";
+            return $this->pdo->prepare($sql)->execute([':id_commande' => $id_commande]);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+
+
 }
