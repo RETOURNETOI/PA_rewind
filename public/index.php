@@ -29,15 +29,15 @@ if (isset($redirects[$uri])) {
 // --- Router ---
 switch ($uri) {
     case '/':
-        require __DIR__ . '/../src/template/home.php';
+        require '../src/template/home.php';
         break;
 
     case '/connexion':
-        require __DIR__ . '/../src/template/connexion.php';
+        require '../src/template/connexion.php';
         break;
 
     case '/inscription':
-        require __DIR__ . '/../src/template/inscription.php';
+        require '../src/template/inscription.php';
         break;
 
     default:
