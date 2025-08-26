@@ -80,7 +80,7 @@ $utilisateurs = $controller->AfficherTous();
                 <td><?= htmlspecialchars($u['nom']) ?></td>
                 <td><?= htmlspecialchars($u['prenom']) ?></td>
                 <td><?= htmlspecialchars($u['email']) ?></td>
-                <td><?= htmlspecialchars($u['telephone']) ?></td>
+                <td><?= $u['telephone'] !== null ? htmlspecialchars($u['telephone']) : '' ?></td>
                 <td><?= htmlspecialchars($u['role']) ?></td>
                 <td>
                     <!-- Formulaire de modification inline -->
@@ -89,7 +89,7 @@ $utilisateurs = $controller->AfficherTous();
                         <input type="text" name="nom" value="<?= htmlspecialchars($u['nom']) ?>">
                         <input type="text" name="prenom" value="<?= htmlspecialchars($u['prenom']) ?>">
                         <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>">
-                        <input type="text" name="telephone" value="<?= htmlspecialchars($u['telephone']) ?>">
+                        <input type="text" name="telephone" value="<?= $u['telephone'] !== null ? htmlspecialchars($u['telephone']) : '' ?>">
                         <select name="role">
                             <option value="client" <?= $u['role']=='client'?'selected':'' ?>>Client</option>
                             <option value="admin" <?= $u['role']=='admin'?'selected':'' ?>>Admin</option>
