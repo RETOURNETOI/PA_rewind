@@ -24,7 +24,7 @@ require_once "../controller/ServiceController.php";
 require_once "../controller/UtilisateurController.php";
 require_once "../controller/HebergementController.php";
 require_once "../controller/PointArretController.php";
-require_once "../controller/ComandeController.php";
+require_once "../controller/CommandeController.php";
 
 // --- Instanciation des contrôleurs ---
 $packCtrl = new PackController();
@@ -724,7 +724,7 @@ try {
             <div class="management-card">
                 <h3>📍 Points d'Arrêt Loire</h3>
                 <p>Administrez les étapes le long de la Loire. Ajoutez descriptions, coordonnées GPS et attractions.</p>
-                <a href="#" class="btn">Gérer les Points</a>
+                <a href="gestion_points_arret.php" class="btn">Gérer les Points</a>
                 <a href="#" class="btn btn-secondary">Carte Interactive</a>
             </div>
             
