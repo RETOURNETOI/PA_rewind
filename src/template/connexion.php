@@ -72,7 +72,7 @@
             }
         }
         ?>
-        <form class="login-form" action="traitement_connexion.php" method="post">
+        <form class="login-form" action="<?= BASE_PATH ?>/traitement_connexion" method="post">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
             <button type="submit">Se connecter</button>

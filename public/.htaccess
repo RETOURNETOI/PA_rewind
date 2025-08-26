@@ -1,9 +1,12 @@
 RewriteEngine On
+
+# Base du projet
 RewriteBase /PA_rewind/public/
 
-# Si le fichier ou dossier existe, ne rien faire
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Si le fichier ou le dossier existe → ne pas réécrire
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-# Sinon, redirige tout vers index.php
+# Sinon → tout renvoyer à index.php
 RewriteRule ^ index.php [L]

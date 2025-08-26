@@ -58,8 +58,8 @@
             }
             ?>
             <p>Vous êtes maintenant connecté.</p>
-            <a href="choisir_hebergement.php" class="btn">Faire une réservation</a>
 
+            <a href="<?= BASE_PATH ?>/choisir_hebergement" class="btn">Faire une réservation</a>
             <a href="ajouter_hebergement.php" class="btn">Faire une réservation</a>
             <a href="mes_reservation.php" class="btn">mes réservation</a>
         </div>

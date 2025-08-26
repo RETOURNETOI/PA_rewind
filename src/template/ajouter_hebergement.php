@@ -49,6 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit">Ajouter</button>
     </form>
 
-    <p><a href="choisir_hebergement.php">Retour à mes hébergements</a></p>
+    <p><a href="<?= BASE_PATH ?>/choisir_hebergement">Retour à mes hébergements</a></p>
 </body>
 </html>

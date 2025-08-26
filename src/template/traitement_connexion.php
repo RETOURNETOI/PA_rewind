@@ -4,8 +4,9 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+require_once __DIR__ . '/../controller/UtilisateurController.php';
 
-require_once '../controller/UtilisateurController.php';
+
 
 
 
@@ -34,21 +35,22 @@ if ($user) {
     // exit;
     switch ($_SESSION['user_role']) {
         case 'admin':
-            header("Location: dashboard_admin.php");
+            header("Location:". BASE_PATH ." /dashboard_admin");
             break;
         case 'client':
-            header("Location: user_dashboard.php");
+            header("Location: " . BASE_PATH . "/user_dashboard");
             break;
         case 'commercial':
-            header("Location: commercial_dashboard.php");
+            header("Location: " . BASE_PATH . "/commercial_dashboard");
             break;
         default:
-            header("Location: user_dashboard.php");
+            header("Location: " . BASE_PATH . "/user_dashboard");
             break;
     }
     exit;
 } else {
-    header("Location: connexion.php?erreur=identifiants_invalides");
+    header("Location: " . BASE_PATH . "/connexion?erreur=identifiants_invalides");
+
     exit;
 }
 

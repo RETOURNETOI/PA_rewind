@@ -1,6 +1,6 @@
 <?php
-require_once '../bdd/Connexion.php';
-require_once '../model/Hebergement.php';
+require_once __DIR__.'/../bdd/Connexion.php';
+require_once __DIR__.'/../model/Hebergement.php';
 
 class HebergementController
 {

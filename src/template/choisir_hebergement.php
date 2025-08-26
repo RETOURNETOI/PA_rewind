@@ -1,5 +1,5 @@
 <?php
-require_once '../controller/HebergementController.php';
+require_once __DIR__ . '/../controller/HebergementController.php';
 $controller = new HebergementController();
 $hebergements = $controller->getAll();
 ?>
