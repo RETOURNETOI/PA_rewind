@@ -34,7 +34,7 @@ if ($user) {
     // exit;
     switch ($_SESSION['user_role']) {
         case 'admin':
-            header("Location: gestionuser.php");
+            header("Location: dashboard_admin.php");
             break;
         case 'client':
             header("Location: user_dashboard.php");
