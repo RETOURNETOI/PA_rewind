@@ -57,10 +57,22 @@ switch ($uri) {
     case '/commercial_dashboard':
         require '../src/template/commercial_dashboard.php';
         break;
-        
+
     case '/choisir_hebergement':
         require '../src/template/choisir_hebergement.php';
-        break;    
+        break;
+        
+    case '/reserver_hebergement':
+        require '../src/template/reserver_hebergement.php';
+        break;
+
+    case '/ajouter_hebergement':
+        require '../src/template/ajouter_hebergement.php';
+        break;
+
+    case '/mes_reservation':
+        require '../src/template/mes_reservation.php';
+        break;
 
     default:
         http_response_code(404);

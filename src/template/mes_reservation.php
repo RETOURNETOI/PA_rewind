@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../controller/HebergementController.php';
+require_once __DIR__.'/../controller/HebergementController.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: connexion.php");
@@ -38,4 +38,4 @@ $reservations = $controller->getReservationsByUser($_SESSION['user_id']);
     </table>
 <?php endif; ?>
 
-<p><a href="user_dashboard.php">Retour au tableau de bord</a></p>
+<p><a href="<?= BASE_PATH ?>/user_dashboard">Retour au tableau de bord</a></p>
