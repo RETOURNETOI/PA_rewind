@@ -53,12 +53,26 @@
             color: #007BFF;
             text-decoration: none;
         }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h1>Connexion</h1>
-        <form class="login-form" action="traiter_connexion.php" method="post">
+        <?php
+        if (isset($_GET['erreur'])) {
+            $erreur = $_GET['erreur'];
+            if ($erreur === 'champs_manquants') {
+                echo '<p class="error-message">Email et mot de passe sont obligatoires.</p>';
+            } elseif ($erreur === 'identifiants_invalides') {
+                echo '<p class="error-message">Email ou mot de passe incorrect.</p>';
+            }
+        }
+        ?>
+        <form class="login-form" action="traitement_connexion.php" method="post">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
             <button type="submit">Se connecter</button>
