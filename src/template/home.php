@@ -14,8 +14,8 @@
 <div class="container">
     <h1>Salam 👋</h1>
     <p>Bienvenue sur notre site</p>
-    <a href="connexion">Se connecter</a>
-    <a href="inscription">S’inscrire</a>
+    <a href="connexion.php">Se connecter</a>
+    <a href="inscription.php">S’inscrire</a>
 </div>
 </body>
 </html>
