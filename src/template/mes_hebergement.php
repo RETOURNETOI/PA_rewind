@@ -2,7 +2,7 @@
 // gestion_hebergements.php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: connexion.php");
+    header("Location: " . BASE_PATH . "/connexion");
     exit;
 }
 

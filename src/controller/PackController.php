@@ -1,6 +1,6 @@
 <?php
-require_once '../bdd/Connexion.php';
-require_once '../model/Pack.php';
+require_once  __DIR__ . '/../bdd/Connexion.php';
+require_once  __DIR__ . '/../model/Pack.php';
 
 class PackController
 {

@@ -4,27 +4,22 @@
 // --- Vérification des droits admin ---
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: connexion.php?erreur=acces_refuse");
+    header("Location: " . BASE_PATH . "/connexion?erreur=acces_refuse");
     exit;
 }
 
-// --- Connexion à la BDD ---
-$dsn = "mysql:host=localhost;dbname=kayak_trip;charset=utf8";
-$user = "root";
-$pass = "";
-try {
-    $db = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
+require_once  __DIR__ . '/../bdd/Connexion.php';
+require_once  __DIR__ . '/../controller/PackController.php';
+require_once  __DIR__ . '/../controller/ServiceController.php';
+require_once  __DIR__ . '/../controller/UtilisateurController.php';
+require_once  __DIR__ . '/../controller/HebergementController.php';
+require_once  __DIR__ . '/../controller/PointArretController.php';
+require_once  __DIR__ . '/../controller/CommandeController.php';
+require_once  __DIR__ . '/../controller/DashboardStats.php';
 
-// --- Inclusion des contrôleurs ---
-require_once "../controller/PackController.php";
-require_once "../controller/ServiceController.php";
-require_once "../controller/UtilisateurController.php";
-require_once "../controller/HebergementController.php";
-require_once "../controller/PointArretController.php";
-require_once "../controller/CommandeController.php";
+// --- Utilisation de la classe Connexion pour obtenir PDO ---
+$connexion = new Connexion();
+$db = $connexion->getPDO();
 
 // --- Instanciation des contrôleurs ---
 $packCtrl = new PackController();
@@ -36,7 +31,10 @@ $commandeCtrl = new CommandeController();
 
 // --- Récupération des statistiques avancées ---
 try {
-    // Statistiques générales
+    // Instanciation de la classe de statistiques
+    $stats = new DashboardStats($db);
+    
+    // Statistiques générales depuis les contrôleurs
     $totalPacks = count($packCtrl->getAll());
     $totalServices = count($serviceCtrl->getAll());
     $totalUsers = count($userCtrl->AfficherTous());
@@ -44,62 +42,16 @@ try {
     $totalPointsArret = count($pointCtrl->getAll());
     $totalCommandes = count($commandeCtrl->getAll());
     
-    // Statistiques utilisateurs par rôle avec pourcentages
-    $stmt = $db->query("SELECT role, COUNT(*) as count FROM utilisateur GROUP BY role");
-    $usersByRole = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Statistiques commandes détaillées
-    $stmt = $db->query("SELECT 
-        COUNT(*) as total,
-        SUM(CASE WHEN statut = 'payée' THEN 1 ELSE 0 END) as payees,
-        SUM(CASE WHEN statut = 'en_attente' THEN 1 ELSE 0 END) as en_attente,
-        SUM(CASE WHEN statut = 'confirmée' THEN 1 ELSE 0 END) as confirmees,
-        SUM(CASE WHEN statut = 'annulée' THEN 1 ELSE 0 END) as annulees
-        FROM commande");
-    $commandeStats = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Évolution des inscriptions (derniers 7 jours)
-    $stmt = $db->query("SELECT DATE(date_inscription) as date, COUNT(*) as count 
-                       FROM utilisateur 
-                       WHERE date_inscription >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-                       GROUP BY DATE(date_inscription) 
-                       ORDER BY date DESC");
-    $inscriptionsRecentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Top 3 des hébergements les plus chers
-    $stmt = $db->query("SELECT h.nom, h.type, h.prix_nuit, pa.nom as point_nom 
-                       FROM hebergement h 
-                       JOIN point_arret pa ON h.id_point = pa.id_point 
-                       ORDER BY h.prix_nuit DESC LIMIT 3");
-    $topHebergements = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Pack et service les plus chers
-    $stmt = $db->query("SELECT nom, prix FROM pack ORDER BY prix DESC LIMIT 1");
-    $mostExpensivePack = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    $stmt = $db->query("SELECT nom, prix FROM service ORDER BY prix DESC LIMIT 1");
-    $mostExpensiveService = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Derniers utilisateurs inscrits avec plus de détails
-    $stmt = $db->query("SELECT nom, prenom, email, role, date_inscription,
-                       DATEDIFF(NOW(), date_inscription) as jours_depuis_inscription
-                       FROM utilisateur 
-                       ORDER BY id_utilisateur DESC LIMIT 5");
-    $recentUsers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Statistiques par types d'hébergement
-    $stmt = $db->query("SELECT type, COUNT(*) as count FROM hebergement GROUP BY type");
-    $hebergementsByType = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Réservations récentes (si table commande_hebergement existe)
-    $stmt = $db->query("SELECT COUNT(*) as count FROM information_schema.tables 
-                       WHERE table_schema = 'kayak_trip' AND table_name = 'commande_hebergement'");
-    $hasReservations = $stmt->fetch(PDO::FETCH_ASSOC)['count'] > 0;
-    
-    if ($hasReservations) {
-        $stmt = $db->query("SELECT COUNT(*) as total_reservations FROM commande_hebergement");
-        $totalReservations = $stmt->fetch(PDO::FETCH_ASSOC)['total_reservations'];
-    }
+    // Statistiques avancées depuis la classe helper
+    $usersByRole = $stats->getUsersByRole();
+    $commandeStats = $stats->getCommandeStats();
+    $inscriptionsRecentes = $stats->getRecentInscriptions();
+    $topHebergements = $stats->getTopHebergements();
+    $mostExpensivePack = $stats->getMostExpensivePack();
+    $mostExpensiveService = $stats->getMostExpensiveService();
+    $recentUsers = $stats->getRecentUsers();
+    $hebergementsByType = $stats->getHebergementsByType();
+    $totalReservations = $stats->getTotalReservations();
     
 } catch (Exception $e) {
     $error = "Erreur lors du chargement des statistiques : " . $e->getMessage();

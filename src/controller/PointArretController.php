@@ -1,6 +1,6 @@
 <?php
-require_once '../bdd/Connexion.php';
-require_once '../model/PointArret.php';
+require_once  __DIR__ . '/../bdd/Connexion.php';
+require_once  __DIR__ . '/../model/PointArret.php';
 
 class PointArretController
 {

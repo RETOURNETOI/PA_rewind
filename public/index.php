@@ -85,6 +85,10 @@ switch ($uri) {
         case '/annuler_reservation':
             require __DIR__ . '/../src/template/annuler_reservation.php';
         break;
+        
+        case '/mes_hebergement':
+            require __DIR__ . '/../src/template/mes_hebergement.php';
+        break;
 
     default:
         http_response_code(404);

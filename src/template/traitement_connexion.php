@@ -13,9 +13,6 @@ require_once __DIR__ . '/../controller/UtilisateurController.php';
 
 
 
-
-
-
 // Récupération des données du formulaire
 $email = $_POST['email'] ?? null;
 $mot_de_passe = $_POST['mot_de_passe'] ?? null;
@@ -40,7 +37,7 @@ if ($user) {
     // exit;
     switch ($_SESSION['user_role']) {
         case 'admin':
-            header("Location:". BASE_PATH ." /dashboard_admin");
+            header("Location:". BASE_PATH ."/dashboard_admin");
             break;
         case 'client':
             header("Location: " . BASE_PATH . "/user_dashboard");

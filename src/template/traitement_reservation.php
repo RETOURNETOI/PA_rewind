@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: " . BASE_PATH . "/mes_hebergements");
+    header("Location: " . BASE_PATH . "/mes_hebergement");
     exit;
 }
 
