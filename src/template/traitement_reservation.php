@@ -9,12 +9,12 @@ if (!defined('BASE_PATH')) {
 require_once __DIR__.'/../controller/HebergementController.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: connexion.php");
+    header("Location: " . BASE_PATH . "/connexion");
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: mes_hebergements.php");
+    header("Location: " . BASE_PATH . "/mes_hebergements");
     exit;
 }
 

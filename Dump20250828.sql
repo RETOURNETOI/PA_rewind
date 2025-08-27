@@ -41,7 +41,7 @@ CREATE TABLE `codes_promo` (
   UNIQUE KEY `code` (`code`),
   KEY `idx_codes_promo_actif` (`actif`),
   KEY `idx_codes_promo_dates` (`date_debut`,`date_fin`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `commande` (
   `statut` enum('en_attente','payée','confirmée','annulée') DEFAULT 'en_attente',
   PRIMARY KEY (`id_commande`),
   KEY `id_utilisateur` (`id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,7 +87,7 @@ DROP TABLE IF EXISTS `commande_hebergement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `commande_hebergement` (
-  `id_commande` int NOT NULL,
+  `id_commande` int NOT NULL AUTO_INCREMENT,
   `id_hebergement` int NOT NULL,
   `id_utilisateur` int NOT NULL,
   `date_debut` date NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE `commande_hebergement` (
   `nb_personnes` int NOT NULL,
   PRIMARY KEY (`id_commande`,`id_hebergement`,`id_utilisateur`,`date_debut`),
   KEY `id_hebergement` (`id_hebergement`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +104,6 @@ CREATE TABLE `commande_hebergement` (
 
 LOCK TABLES `commande_hebergement` WRITE;
 /*!40000 ALTER TABLE `commande_hebergement` DISABLE KEYS */;
-INSERT INTO `commande_hebergement` VALUES (0,2,5,'2025-08-29','2025-08-30',3);
 /*!40000 ALTER TABLE `commande_hebergement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +120,7 @@ CREATE TABLE `commande_service` (
   `quantite` int DEFAULT '1',
   PRIMARY KEY (`id_commande`,`id_service`),
   KEY `id_service` (`id_service`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +152,7 @@ CREATE TABLE `conversations` (
   KEY `id_client` (`id_client`),
   KEY `id_commercial` (`id_commercial`),
   KEY `idx_conversations_statut` (`statut`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +182,7 @@ CREATE TABLE `fermetures_hebergement` (
   PRIMARY KEY (`id_fermeture`),
   KEY `id_hebergement` (`id_hebergement`),
   KEY `idx_fermetures_dates` (`date_debut`,`date_fin`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +211,7 @@ CREATE TABLE `hebergement` (
   `description` text,
   PRIMARY KEY (`id_hebergement`),
   KEY `id_point` (`id_point`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +237,7 @@ CREATE TABLE `itineraire` (
   `nom` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_itineraire`),
   KEY `id_utilisateur` (`id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -265,7 +264,7 @@ CREATE TABLE `itineraire_etape` (
   PRIMARY KEY (`id_itineraire`,`id_point`,`ordre`),
   KEY `id_point` (`id_point`),
   KEY `id_hebergement` (`id_hebergement`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +292,7 @@ CREATE TABLE `message` (
   PRIMARY KEY (`id_message`),
   KEY `id_utilisateur` (`id_utilisateur`),
   KEY `id_commercial` (`id_commercial`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +322,7 @@ CREATE TABLE `messages_conversation` (
   KEY `id_conversation` (`id_conversation`),
   KEY `id_expediteur` (`id_expediteur`),
   KEY `idx_messages_lu` (`lu`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,7 +353,7 @@ CREATE TABLE `newsletter_abonnes` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `token_desabonnement` (`token_desabonnement`),
   KEY `idx_newsletter_actif` (`actif`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -385,7 +384,7 @@ CREATE TABLE `newsletter_campagnes` (
   `nb_ouverts` int DEFAULT '0',
   `nb_clics` int DEFAULT '0',
   PRIMARY KEY (`id_campagne`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -410,7 +409,7 @@ CREATE TABLE `pack` (
   `description` text,
   `prix` decimal(8,2) NOT NULL,
   PRIMARY KEY (`id_pack`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -437,7 +436,7 @@ CREATE TABLE `pack_etape` (
   PRIMARY KEY (`id_pack`,`id_point`,`id_hebergement`),
   KEY `id_point` (`id_point`),
   KEY `id_hebergement` (`id_hebergement`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -467,7 +466,7 @@ CREATE TABLE `plages_tarifaires` (
   `date_creation` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_plage`),
   KEY `idx_plages_tarifaires_dates` (`date_debut`,`date_fin`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -493,7 +492,7 @@ CREATE TABLE `point_arret` (
   `latitude` decimal(10,6) DEFAULT NULL,
   `longitude` decimal(10,6) DEFAULT NULL,
   PRIMARY KEY (`id_point`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -518,7 +517,7 @@ CREATE TABLE `service` (
   `description` text,
   `prix` decimal(8,2) NOT NULL,
   PRIMARY KEY (`id_service`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -548,7 +547,7 @@ CREATE TABLE `usage_codes_promo` (
   KEY `id_code` (`id_code`),
   KEY `id_utilisateur` (`id_utilisateur`),
   KEY `id_commande` (`id_commande`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -578,7 +577,7 @@ CREATE TABLE `utilisateur` (
   `role` enum('client','admin','commercial') DEFAULT 'client',
   PRIMARY KEY (`id_utilisateur`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -600,4 +599,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-27 17:41:51
+-- Dump completed on 2025-08-28  0:31:53

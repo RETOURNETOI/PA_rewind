@@ -149,16 +149,21 @@ class HebergementController
     }
 
     // Dans HebergementController.php
-    public function annulerReservation(int $id_commande): bool
+    public function annulerReservation(int $id_commande, int $id_utilisateur): bool
     {
         try {
-            $sql = "DELETE FROM COMMANDE_HEBERGEMENT WHERE id_commande = :id_commande";
-            return $this->pdo->prepare($sql)->execute([':id_commande' => $id_commande]);
+            $sql = "DELETE FROM COMMANDE_HEBERGEMENT 
+                    WHERE id_commande = :id_commande AND id_utilisateur = :id_utilisateur";
+            return $this->pdo->prepare($sql)->execute([
+                ':id_commande' => $id_commande,
+                ':id_utilisateur' => $id_utilisateur
+            ]);
         } catch (Exception $e) {
             error_log($e->getMessage());
             return false;
         }
     }
+    
 
 
 
