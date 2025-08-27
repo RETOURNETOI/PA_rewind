@@ -1,10 +1,21 @@
 <?php
 session_start();
+
+if (!defined('BASE_PATH')) {
+    http_response_code(403);
+    exit('Accès interdit');
+}
+
 require_once __DIR__.'/../controller/HebergementController.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: connexion.php");
     exit;
+}
+
+if (isset($_SESSION['flash'])) {
+    echo "<p>{$_SESSION['flash']}</p>";
+    unset($_SESSION['flash']);
 }
 
 $controller = new HebergementController();
@@ -24,9 +35,7 @@ $reservations = $controller->getReservationsByUser($_SESSION['user_id']);
             <th>Nombre de personnes</th>
         </tr>
         
-        <?php echo "<pre>";
-                var_dump($reservations);
-                echo "</pre>";
+        <?php 
         foreach ($reservations as $r) : ?>
             <tr>
                 <td><?= htmlspecialchars($r['hebergement_nom']) ?></td>

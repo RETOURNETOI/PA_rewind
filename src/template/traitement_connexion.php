@@ -4,6 +4,11 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+if (!defined('BASE_PATH')) {
+    http_response_code(403);
+    exit('Accès interdit');
+}
+
 require_once __DIR__ . '/../controller/UtilisateurController.php';
 
 

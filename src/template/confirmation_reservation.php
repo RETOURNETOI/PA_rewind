@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!defined('BASE_PATH')) {
+    http_response_code(403);
+    exit('Accès interdit');
+}
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: connexion.php");
     exit;

@@ -1,6 +1,12 @@
 <?php
 // annuler_reservation.php
 session_start();
+
+if (!defined('BASE_PATH')) {
+    http_response_code(403);
+    exit('Accès interdit');
+}
+
 require_once '../controller/HebergementController.php';
 
 if (!isset($_SESSION['user_id'])) {

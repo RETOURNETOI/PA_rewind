@@ -94,36 +94,35 @@ class HebergementController
 
     // int $id_hebergement, int $id_utilisateur, string $date_debut, string $date_fin, int $nb_personnes
     // $id_hebergement, $date_debut, $date_fin, $nb_personnes
-    public function reserver(int $id_hebergement, int $id_utilisateur, string $date_debut, string $date_fin, int $nb_personnes) : bool {
+    public function reserver(
+        int $id_hebergement,
+        int $id_utilisateur,
+        string $date_debut,
+        string $date_fin,
+        int $nb_personnes
+    ) : bool {
         try {
+            // Vérifie la disponibilité
             if (!$this->estDisponible($id_hebergement, $date_debut, $date_fin, $nb_personnes)) {
-                echo "DEBUG: hébergement non dispo<br>";
                 return false;
             }
     
             $sql = "INSERT INTO COMMANDE_HEBERGEMENT 
                     (id_hebergement, id_utilisateur, date_debut, date_fin, nb_personnes)
                     VALUES (:id_hebergement, :id_utilisateur, :date_debut, :date_fin, :nb_personnes)";
+            
             $stmt = $this->pdo->prepare($sql);
     
-            $ok = $stmt->execute([
+            return $stmt->execute([
                 ':id_hebergement' => $id_hebergement,
                 ':id_utilisateur' => $id_utilisateur,
                 ':date_debut' => $date_debut,
                 ':date_fin' => $date_fin,
                 ':nb_personnes' => $nb_personnes
             ]);
-    
-            if (!$ok) {
-                echo "DEBUG: erreur PDO → " . implode(" | ", $stmt->errorInfo()) . "<br>";
-                return false;
-            }
-    
-            echo "DEBUG: INSERT exécuté avec succès<br>";
-            return true;
-    
+            
         } catch (Exception $e) {
-            echo "DEBUG: exception → " . $e->getMessage() . "<br>";
+            error_log("Erreur réservation : " . $e->getMessage());
             return false;
         }
     }

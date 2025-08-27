@@ -1,5 +1,12 @@
 <?php
 session_start();
+
+
+if (!defined('BASE_PATH')) {
+    http_response_code(403);
+    exit('Accès interdit');
+}
+
 require_once __DIR__.'/../controller/HebergementController.php';
 
 // Si formulaire soumis

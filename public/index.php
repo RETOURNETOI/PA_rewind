@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 // --- Chemin de base ---
-define('BASE_PATH', '/PA_rewind/public');
+define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 
 // --- Récupère l’URI demandée ---
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
@@ -31,51 +31,55 @@ if (isset($redirects[$uri])) {
 // --- Router ---
 switch ($uri) {
     case '/':
-        require '../src/template/home.php';
+        require __DIR__ . '/../src/template/home.php';
         break;
 
     case '/connexion':
-        require '../src/template/connexion.php';
+        require __DIR__ . '/../src/template/connexion.php';
         break;
 
     case '/inscription':
-        require '../src/template/inscription.php';
+        require __DIR__ . '/../src/template/inscription.php';
         break;
 
     case '/traitement_connexion':
-        require '../src/template/traitement_connexion.php';
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit('Méthode non autorisée');
+        }
+        require __DIR__ . '/../src/template/traitement_connexion.php';
         break;
 
     case '/dashboard_admin':
-        require '../src/template/dashboard_admin.php';
+        require __DIR__ . '/../src/template/dashboard_admin.php';
         break;
 
     case '/user_dashboard':
-        require '../src/template/user_dashboard.php';
+        require __DIR__ . '/../src/template/user_dashboard.php';
         break;
 
     case '/commercial_dashboard':
-        require '../src/template/commercial_dashboard.php';
+        require __DIR__ . '/../src/template/commercial_dashboard.php';
         break;
 
     case '/choisir_hebergement':
-        require '../src/template/choisir_hebergement.php';
+        require __DIR__ . '/../src/template/choisir_hebergement.php';
         break;
         
     case '/reserver_hebergement':
-        require '../src/template/reserver_hebergement.php';
+        require __DIR__ . '/../src/template/reserver_hebergement.php';
         break;
 
     case '/ajouter_hebergement':
-        require '../src/template/ajouter_hebergement.php';
+        require __DIR__ . '/../src/template/ajouter_hebergement.php';
         break;
 
     case '/mes_reservation':
-        require '../src/template/mes_reservation.php';
+        require __DIR__ . '/../src/template/mes_reservation.php';
         break;
 
         case '/traitement_reservation':
-            require '../src/template/traitement_reservation.php';
+            require __DIR__ . '/../src/template/traitement_reservation.php';
             break;
 
     default:

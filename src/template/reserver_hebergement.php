@@ -1,12 +1,19 @@
 <?php
 session_start();
+
+if (!defined('BASE_PATH')) {
+    http_response_code(403);
+    exit('Accès interdit');
+}
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: connexion.php");
     exit;
 }
 
 if (!isset($_GET['id_hebergement'])) {
-    header("Location: mes_reservation.php");
+    $_SESSION['flash'] = "Réservation réussie !";
+    header("Location: " . BASE_PATH . "/mes_reservation");
     exit;
 }
 ?>
@@ -21,15 +28,21 @@ if (!isset($_GET['id_hebergement'])) {
 <body>
     <h1>Réserver un Hébergement</h1>
     <form action="<?= BASE_PATH ?>/traitement_reservation" method="post">
-        <input type="hidden" name="id_hebergement" value="<?= htmlspecialchars($_GET['id_hebergement']) ?>">
-        <input type="hidden" name="id_utilisateur" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
-        <label for="date_debut">Date de début:</label>
-        <input type="date" id="date_debut" name="date_debut" required>
-        <label for="date_fin">Date de fin:</label>
-        <input type="date" id="date_fin" name="date_fin" required>
-        <label for="nb_personnes">Nombre de personnes:</label>
-        <input type="number" id="nb_personnes" name="nb_personnes" min="1" required>
-        <button type="submit">Réserver</button>
-    </form>
+    <input type="hidden" name="id_hebergement" value="<?= htmlspecialchars($_GET['id_hebergement']) ?>">
+    
+    <label>Date de début:
+        <input type="date" name="date_debut" required>
+    </label>
+    
+    <label>Date de fin:
+        <input type="date" name="date_fin" required>
+    </label>
+    
+    <label>Nombre de personnes:
+        <input type="number" name="nb_personnes" min="1" value="1" required>
+    </label>
+    
+    <button type="submit">Réserver</button>
+</form>
 </body>
 </html>

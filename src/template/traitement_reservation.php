@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!defined('BASE_PATH')) {
+    http_response_code(403);
+    exit('Accès interdit');
+}
+
 require_once __DIR__.'/../controller/HebergementController.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -20,18 +26,21 @@ $nb_personnes = (int)($_POST['nb_personnes'] ?? 1);
 
 $controller = new HebergementController();
 $dispo = $controller->estDisponible($id_hebergement, $date_debut, $date_fin, $nb_personnes);
-var_dump($dispo);
+// var_dump($dispo);
 // ------------------- Le if de réservation -------------------
 try {
     // Tente de créer la réservation
     $reserverOk = $controller->reserver($id_hebergement, $id_utilisateur, $date_debut, $date_fin, $nb_personnes);
     if ($reserverOk) {
-        echo "Réservation réussie !";
+        // ✅ Redirection vers la liste des réservations
+        header("Location: " . BASE_PATH . "/mes_reservation");
+    exit;
     } else {
+        // ❌ Affiche un message d'erreur
         echo "Échec réservation.";
         print_r($controller->getPDO()->errorInfo());
+        exit;
     }
-    exit;
 } catch (Exception $e) {
     echo "Erreur : " . htmlspecialchars($e->getMessage());
     exit;
