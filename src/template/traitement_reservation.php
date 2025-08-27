@@ -25,23 +25,13 @@ var_dump($dispo);
 try {
     // Tente de créer la réservation
     $reserverOk = $controller->reserver($id_hebergement, $id_utilisateur, $date_debut, $date_fin, $nb_personnes);
-    if ($controller->reserver($id_hebergement, $id_utilisateur, $date_debut, $date_fin, $nb_personnes)) {
+    if ($reserverOk) {
         echo "Réservation réussie !";
     } else {
         echo "Échec réservation.";
         print_r($controller->getPDO()->errorInfo());
     }
     exit;
-    if ($reserverOk) {
-        // ✅ Réservation réussie, redirection vers mes_reservations
-        header("Location: " . BASE_PATH . "/mes_reservations");
-        exit;
-    } else {
-        // ❌ Échec réservation : affiche l'erreur PDO pour debug
-        echo "Échec de la réservation.<br>";
-        print_r($controller->getPDO()->errorInfo());
-        exit;
-    }
 } catch (Exception $e) {
     echo "Erreur : " . htmlspecialchars($e->getMessage());
     exit;

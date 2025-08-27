@@ -92,42 +92,43 @@ class HebergementController
     }
 
 
-
-    public function reserver(int $id_hebergement, int $id_utilisateur, string $date_debut, string $date_fin, int $nb_personnes): bool
-    {
+    // int $id_hebergement, int $id_utilisateur, string $date_debut, string $date_fin, int $nb_personnes
+    // $id_hebergement, $date_debut, $date_fin, $nb_personnes
+    public function reserver(int $id_hebergement, int $id_utilisateur, string $date_debut, string $date_fin, int $nb_personnes) : bool {
         try {
-            // Vérifie disponibilité
             if (!$this->estDisponible($id_hebergement, $date_debut, $date_fin, $nb_personnes)) {
-                throw new Exception("Hébergement non disponible.");
+                echo "DEBUG: hébergement non dispo<br>";
+                return false;
             }
-
-            // Insère la réservation
+    
             $sql = "INSERT INTO COMMANDE_HEBERGEMENT 
                     (id_hebergement, id_utilisateur, date_debut, date_fin, nb_personnes)
                     VALUES (:id_hebergement, :id_utilisateur, :date_debut, :date_fin, :nb_personnes)";
-
             $stmt = $this->pdo->prepare($sql);
-            $result = $stmt->execute([
+    
+            $ok = $stmt->execute([
                 ':id_hebergement' => $id_hebergement,
                 ':id_utilisateur' => $id_utilisateur,
                 ':date_debut' => $date_debut,
                 ':date_fin' => $date_fin,
                 ':nb_personnes' => $nb_personnes
             ]);
-
-            if (!$result) {
-                echo "Erreur PDO :<br>";
-                print_r($stmt->errorInfo());
-                exit;
+    
+            if (!$ok) {
+                echo "DEBUG: erreur PDO → " . implode(" | ", $stmt->errorInfo()) . "<br>";
+                return false;
             }
-
-            return $result;
-
+    
+            echo "DEBUG: INSERT exécuté avec succès<br>";
+            return true;
+    
         } catch (Exception $e) {
-            error_log($e->getMessage());
+            echo "DEBUG: exception → " . $e->getMessage() . "<br>";
             return false;
         }
     }
+    
+
 
 
     // Dans HebergementController.php
