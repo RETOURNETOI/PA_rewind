@@ -11,14 +11,14 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
-require_once  __DIR__ . '/../bdd/Connexion.php';
-require_once  __DIR__ . '/../controller/PackController.php';
-require_once  __DIR__ . '/../controller/ServiceController.php';
-require_once  __DIR__ . '/../controller/UtilisateurController.php';
-require_once  __DIR__ . '/../controller/HebergementController.php';
-require_once  __DIR__ . '/../controller/PointArretController.php';
-require_once  __DIR__ . '/../controller/CommandeController.php';
-require_once  __DIR__ . '/../controller/DashboardStats.php';
+require_once  __DIR__ . '/../../bdd/Connexion.php';
+require_once  __DIR__ . '/../../controller/PackController.php';
+require_once  __DIR__ . '/../../controller/ServiceController.php';
+require_once  __DIR__ . '/../../controller/UtilisateurController.php';
+require_once  __DIR__ . '/../../controller/HebergementController.php';
+require_once  __DIR__ . '/../../controller/PointArretController.php';
+require_once  __DIR__ . '/../../controller/CommandeController.php';
+require_once  __DIR__ . '/../../controller/DashboardStats.php';
 
 // --- Utilisation de la classe Connexion pour obtenir PDO ---
 $connexion = new Connexion();
@@ -471,8 +471,8 @@ try {
                 <span style="color: #999;">• <span class="current-time live-time" id="header-time">Chargement...</span></span>
             </div>
             <div>
-                <a href="<?= BASE_PATH ?>/ajouter_hebergement" class="action-btn">ajt hebergement</a>
-                <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">gestion utilisateur</a>
+                <a href="<?= BASE_PATH ?>/" class="action-btn">home</a>
+                <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">⚙️ gestion utilisateur</a>
                 <a href="logout.php" class="logout-btn">Se déconnecter</a>
             </div>
         </div>
