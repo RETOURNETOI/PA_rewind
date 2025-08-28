@@ -16,13 +16,19 @@ require_once __DIR__.'/../controller/HebergementController.php';
 // Si formulaire soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new HebergementController();
-    $ok = $controller->ajouter($_POST);
-
-    if ($ok) {
-        header("Location: " . BASE_PATH . "/mes_hebergement");
-        exit;
+    // Récupérer automatiquement un id_point valide
+    $id_point = $controller->getDefaultIdPoint();
+    if ($id_point === null) {
+        $message = "❌ Aucun point valide disponible.";
     } else {
-        $message = "❌ Erreur lors de l'ajout de l'hébergement.";
+        $_POST['id_point'] = $id_point;
+        $ok = $controller->ajouter($_POST);
+        if ($ok) {
+            header("Location: " . BASE_PATH . "/mes_hebergement");
+            exit;
+        } else {
+            $message = "❌ Erreur lors de l'ajout de l'hébergement.";
+        }
     }
 }
 ?>
@@ -176,11 +182,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Ajouter un Hébergement</h1>
         <?php if (isset($message)) echo "<p class='error-message'>$message</p>"; ?>
         <form method="post">
-            <div class="form-group">
-                <label for="id_point">ID Point :</label>
-                <input type="number" name="id_point" id="id_point" required>
-            </div>
-
             <div class="form-group">
                 <label for="nom">Nom :</label>
                 <input type="text" name="nom" id="nom" required>

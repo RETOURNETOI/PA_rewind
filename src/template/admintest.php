@@ -1,21 +1,18 @@
 <?php
 // admin_test.php
 
-// --- Connexion à la BDD ---
-$dsn = "mysql:host=localhost;dbname=kayak_trip;charset=utf8";
-$user = "root";
-$pass = "";
-try {
-    $db = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
 
 // --- Inclusion des classes & contrôleurs ---
-require_once "../model/Pack.php";
-require_once "../controller/PackController.php";
-require_once "../model/Service.php";
-require_once "../controller/ServiceController.php";
+require_once  __DIR__ . '/../bdd/Connexion.php';
+require_once  __DIR__ . '/../controller/PackController.php';
+require_once  __DIR__ . '/../controller/ServiceController.php';
+require_once  __DIR__ . '/../model/Service.php';
+require_once  __DIR__ . '/../controller/DashboardStats.php';
+require_once  __DIR__ . '/../model/Pack.php';
+// --- Connexion à la BDD ---
+$connexion = new Connexion();
+$db = $connexion->getPDO();
+
 
 // --- Instanciation des contrôleurs ---
 $packCtrl = new PackController();

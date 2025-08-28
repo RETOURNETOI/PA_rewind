@@ -93,6 +93,13 @@ switch ($uri) {
     case '/gestionuser':
         require __DIR__ . '/../src/template/gestionuser.php';
     break;
+    
+    case '/admintest':
+        require __DIR__ . '/../src/template/admintest.php';
+    break;
+    case '/listepointsarret':
+        require __DIR__ . '/../src/template//liste_points_arret.php';
+    break;
 
     default:
         http_response_code(404);

@@ -483,9 +483,9 @@ try {
             <h1>🚣‍♂️ Dashboard Admin</h1>
             <p>Panneau de contrôle - Kayak Trip Management System</p>
             <div class="quick-actions">
-                <a href="admintest.php" class="action-btn">➕ Gestion Pack</a>
-                <a href="gestionuser.php" class="action-btn">👤 Gestion Utilisateur</a>
-                <a href="#" class="action-btn">📊 Rapport Complet</a>
+                <a href="<?= BASE_PATH ?>/admintest" class="action-btn">➕ Gestion Pack</a>
+                <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">👤 Gestion Utilisateur</a>
+                <a href="<?= BASE_PATH ?>/listepointsarret" class="action-btn">📊 Rapport Complet</a>
             </div>
         </div>
 

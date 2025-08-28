@@ -12,21 +12,44 @@ class HebergementController
 
     public function ajouter(array $data): bool
     {
-        try{
-            foreach(['id_point','nom','type','capacite','prix_nuit'] as $k)
-                if(!isset($data[$k])) throw new Exception("Champ requis: $k");
-            $sql="INSERT INTO HEBERGEMENT (id_point, nom, type, capacite, prix_nuit, description)
-                VALUES (:pid, :nom, :type, :cap, :prix, :desc)";
+        try {
+            // Vérifiez que les champs requis (y compris id_point) sont présents
+            foreach (['id_point', 'nom', 'type', 'capacite', 'prix_nuit'] as $k) {
+                if (!isset($data[$k])) {
+                    throw new Exception("Champ requis: $k");
+                }
+            }
+    
+            $sql = "INSERT INTO HEBERGEMENT (id_point, nom, type, capacite, prix_nuit, description)
+                    VALUES (:pid, :nom, :type, :cap, :prix, :desc)";
+    
             return $this->pdo->prepare($sql)->execute([
-                ':pid'=>$data['id_point'],
-                ':nom'=>$data['nom'],
-                ':type'=>$data['type'],
-                ':cap'=>$data['capacite'],
-                ':prix'=>$data['prix_nuit'],
-                ':desc'=>$data['description'] ?? null
+                ':pid' => $data['id_point'],
+                ':nom' => $data['nom'],
+                ':type' => $data['type'],
+                ':cap' => $data['capacite'],
+                ':prix' => $data['prix_nuit'],
+                ':desc' => $data['description'] ?? null
             ]);
-        }catch(Exception $e){ error_log($e->getMessage()); return false; }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
     }
+
+    public function getDefaultIdPoint(): ?int
+{
+    try {
+        // Exemple : Récupérer le premier id_point disponible dans la table POINT
+        $sql = "SELECT id_point FROM POINT LIMIT 1";
+        $st = $this->pdo->query($sql);
+        $result = $st->fetch(PDO::FETCH_ASSOC);
+        return $result ? (int)$result['id_point'] : null;
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        return null;
+    }
+}
 
     public function getById(int $id): ?array
     {
