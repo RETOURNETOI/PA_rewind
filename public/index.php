@@ -20,9 +20,8 @@ if ($uri === '' || $uri === '/index.php') {
 // --- Gestion des assets statiques (CSS, JS, images) ---
 if (preg_match('/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/', $uri)) {
     $filePath = __DIR__ . $uri;
-    
+
     if (file_exists($filePath)) {
-        // Définir le type MIME approprié
         $mimeTypes = [
             'js' => 'application/javascript',
             'css' => 'text/css',
@@ -38,28 +37,22 @@ if (preg_match('/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/', 
             'eot' => 'application/vnd.ms-fontobject',
             'map' => 'application/json'
         ];
-        
         $extension = strtolower(pathinfo($uri, PATHINFO_EXTENSION));
         $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
-        
+
         header("Content-Type: $mimeType");
-        
-        // Headers de cache pour les assets
+
         if (in_array($extension, ['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg', 'woff', 'woff2', 'ttf', 'eot'])) {
-            header("Cache-Control: public, max-age=31536000"); // Cache pour 1 an
+            header("Cache-Control: public, max-age=31536000");
             header("Expires: " . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
         }
-        
-        // Headers de sécurité pour JavaScript
         if ($extension === 'js') {
             header("X-Content-Type-Options: nosniff");
         }
-        
-        // Headers de sécurité pour les polices
         if (in_array($extension, ['woff', 'woff2', 'ttf', 'eot'])) {
             header("Access-Control-Allow-Origin: *");
         }
-        
+
         readfile($filePath);
         exit;
     } else {
@@ -71,7 +64,7 @@ if (preg_match('/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/', 
 // --- Table de redirections ---
 $redirects = [
     '/ancienne-page' => '/nouvelle-page',
-    '/dashboard_admin' => '/dashboardadmin', // Redirection pour compatibilité
+    '/dashboard_admin' => '/dashboardadmin',
 ];
 if (isset($redirects[$uri])) {
     header("Location: " . BASE_PATH . $redirects[$uri], true, 301);
@@ -160,7 +153,7 @@ switch ($uri) {
         require __DIR__ . '/../src/template/composer_itineraire.php';
         break;
 
-    // Routes pour les pages client
+    // Pages client
     case '/packs':
         require __DIR__ . '/../src/template/client/packs.php';
         break;
