@@ -842,43 +842,6 @@ try {
     </div>
 
     <!-- Script pour les animations -->
-    <script>
-        // Animation au chargement des barres de progression
-        document.addEventListener('DOMContentLoaded', function() {
-            const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 500);
-            });
-
-            // Mise à jour de l'heure toutes les secondes
-            setInterval(updateTime, 1000);
-        });
-
-        function updateTime() {
-            const now = new Date();
-            const timeElements = document.querySelectorAll('.current-time');
-            timeElements.forEach(el => {
-                el.textContent = now.toLocaleTimeString('fr-FR', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            });
-        }
-
-        // Effet de survol amélioré pour les cartes
-        document.querySelectorAll('.stat-card, .management-card, .chart-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-8px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-    </script>
+    <script src="path/to/kayak-dashboard-enhanced.js"></script>
 </body>
 </html>
