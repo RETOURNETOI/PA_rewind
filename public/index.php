@@ -153,6 +153,10 @@ switch ($uri) {
         require __DIR__ . '/../src/template/composer_itineraire.php';
         break;
 
+    case '/home':
+        require __DIR__ . '/../src/template/home.php';
+        break;
+
     // Pages client
     case '/packs':
         require __DIR__ . '/../src/template/client/packs.php';
