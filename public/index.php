@@ -103,7 +103,7 @@ switch ($uri) {
     break;
     
     case '/gestionpointsarret':
-        require __DIR__ . '/../src/template/gestion_points_arret.php';
+        require __DIR__ . '/../src/template/gestion/gestion_points_arret.php';
     break;
     case '/composer_itineraire':
         require __DIR__ . '/../src/template/composer_itineraire';
