@@ -1,5 +1,5 @@
 // Dashboard Kayak Trip Management System - JavaScript Enhanced
-// Version corrigée avec gestion d'heure française et fonctionnalités avancées
+// Version externe complète avec gestion d'heure française et fonctionnalités avancées
 
 class KayakDashboardManager {
     constructor() {
@@ -10,7 +10,7 @@ class KayakDashboardManager {
             notificationDuration: 4000,
             cardHoverScale: 1.02,
             cardHoverTranslate: -8,
-            timezone: 'Europe/Paris' // Fuseau horaire français
+            timezone: 'Europe/Paris'
         };
         
         this.state = {
@@ -34,7 +34,7 @@ class KayakDashboardManager {
         this.bindElements();
         this.setupEventListeners();
         this.startRealTimeUpdates();
-        console.log('🚣‍♂️ Dashboard Kayak initialisé avec succès');
+        console.log('Dashboard Kayak initialisé avec succès');
     }
 
     bindElements() {
@@ -44,17 +44,13 @@ class KayakDashboardManager {
             statCards: document.querySelectorAll('.stat-card'),
             managementCards: document.querySelectorAll('.management-card'),
             chartCards: document.querySelectorAll('.chart-card'),
-            allCards: document.querySelectorAll('.stat-card, .management-card, .chart-card'),
+            allCards: document.querySelectorAll('.stat-card, .management-card, .chart-card, .service-card, .feature-card'),
             actionButtons: document.querySelectorAll('.action-btn'),
             managementButtons: document.querySelectorAll('.btn')
         };
     }
 
     setupEventListeners() {
-        document.addEventListener('DOMContentLoaded', () => {
-            this.handleDOMReady();
-        });
-
         // Gestion du redimensionnement
         window.addEventListener('resize', this.debounce(() => {
             this.handleResize();
@@ -91,15 +87,12 @@ class KayakDashboardManager {
 
     // ===== GESTION DU TEMPS =====
     startTimeUpdates() {
-        // Mise à jour immédiate
         this.updateTime();
         
-        // Nettoyage de l'ancien interval si existant
         if (this.state.timeInterval) {
             clearInterval(this.state.timeInterval);
         }
         
-        // Démarrage du nouvel interval
         this.state.timeInterval = setInterval(() => {
             this.updateTime();
         }, this.config.timeUpdateInterval);
@@ -131,6 +124,8 @@ class KayakDashboardManager {
         // Mise à jour spécifique des éléments
         const headerTime = document.getElementById('header-time');
         const systemTime = document.getElementById('system-time');
+        const currentTime = document.getElementById('current-time');
+        const footerTime = document.getElementById('footer-time');
 
         if (headerTime) {
             headerTime.textContent = fullTimeString;
@@ -142,8 +137,18 @@ class KayakDashboardManager {
             this.animateTimeUpdate(systemTime);
         }
 
+        if (currentTime) {
+            currentTime.textContent = fullTimeString;
+            this.animateTimeUpdate(currentTime);
+        }
+
+        if (footerTime) {
+            footerTime.textContent = `Mis à jour: ${shortTimeString}`;
+            this.animateTimeUpdate(footerTime);
+        }
+
         // Mise à jour des autres éléments de temps
-        document.querySelectorAll('.current-time:not(#header-time):not(#system-time)').forEach(el => {
+        document.querySelectorAll('.current-time:not(#header-time):not(#system-time):not(#current-time)').forEach(el => {
             el.textContent = shortTimeString;
             this.animateTimeUpdate(el);
         });
@@ -156,7 +161,6 @@ class KayakDashboardManager {
     }
 
     animateTimeUpdate(element) {
-        // Effet de couleur lors de la mise à jour
         const originalColor = element.style.color || '';
         element.style.color = '#764ba2';
         element.style.transition = 'color 0.2s ease';
@@ -171,13 +175,11 @@ class KayakDashboardManager {
     }
 
     handleMinuteChange(now) {
-        // Stockage de la minute précédente
         if (!this.lastMinute) {
             this.lastMinute = now.getMinutes();
             return;
         }
 
-        // Détection du changement de minute
         if (now.getMinutes() !== this.lastMinute) {
             this.onMinuteChange(now);
             this.lastMinute = now.getMinutes();
@@ -185,7 +187,6 @@ class KayakDashboardManager {
     }
 
     onMinuteChange(now) {
-        // Effet visuel subtil lors du changement de minute
         document.querySelectorAll('.live-time').forEach(el => {
             el.style.transform = 'scale(1.1)';
             el.style.transition = 'transform 0.3s ease';
@@ -195,8 +196,7 @@ class KayakDashboardManager {
             }, 300);
         });
 
-        // Log optionnel
-        console.log('⏰ Minute changée:', now.toLocaleTimeString('fr-FR', {
+        console.log('Minute changée:', now.toLocaleTimeString('fr-FR', {
             timeZone: this.config.timezone
         }));
     }
@@ -211,21 +211,17 @@ class KayakDashboardManager {
             const targetWidth = bar.style.width || bar.dataset.width || '0%';
             const targetValue = bar.textContent || '';
             
-            // Préparation de l'animation
             bar.style.width = '0%';
             bar.style.transition = 'none';
             
-            // Animation échelonnée
             setTimeout(() => {
                 bar.style.transition = `width ${this.config.progressAnimationDuration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
                 bar.style.width = targetWidth;
                 
-                // Animation du texte si nécessaire
                 if (targetValue.includes('%')) {
                     this.animateProgressText(bar, targetValue, this.config.progressAnimationDuration);
                 }
                 
-                // Callback de fin d'animation
                 setTimeout(() => {
                     bar.classList.add('animation-complete');
                     this.onProgressAnimationComplete(bar, index);
@@ -333,7 +329,6 @@ class KayakDashboardManager {
         const button = e.currentTarget;
         this.animateButtonClick(button);
         
-        // Analyse de l'action basée sur le contenu du bouton
         const action = this.extractActionFromButton(button);
         
         switch (action) {
@@ -442,27 +437,22 @@ class KayakDashboardManager {
             transition: transform ${duration}ms linear;
         `;
 
-        // Ajout au DOM
         document.body.appendChild(notification);
         this.state.notifications.push(notification);
 
-        // Animation d'entrée
         requestAnimationFrame(() => {
             notification.style.transform = 'translateX(0)';
         });
 
-        // Animation de la barre de progression
         setTimeout(() => {
             progress.style.transform = 'scaleX(0)';
         }, 100);
 
-        // Gestionnaire de fermeture
         const closeBtn = notification.querySelector('.notification-close');
         closeBtn.addEventListener('click', () => {
             this.removeNotification(notification);
         });
 
-        // Auto-suppression
         setTimeout(() => {
             this.removeNotification(notification);
         }, duration);
@@ -496,27 +486,23 @@ class KayakDashboardManager {
 
     // ===== RACCOURCIS CLAVIER =====
     handleKeyboardShortcuts(e) {
-        // Ctrl/Cmd + R : Actualiser les données
         if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
             e.preventDefault();
             this.refreshDashboard();
             return;
         }
 
-        // Escape : Fermer toutes les notifications
         if (e.key === 'Escape') {
             this.clearAllNotifications();
             return;
         }
 
-        // Ctrl/Cmd + N : Nouvelle notification test
         if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
             e.preventDefault();
             this.showNotification('Notification de test', 'info');
             return;
         }
 
-        // Ctrl/Cmd + T : Afficher l'heure complète
         if ((e.ctrlKey || e.metaKey) && e.key === 't') {
             e.preventDefault();
             const now = new Date();
@@ -540,12 +526,10 @@ class KayakDashboardManager {
     }
 
     updateRealTimeData() {
-        // Simulation de données en temps réel
         const statNumbers = document.querySelectorAll('.stat-number');
         statNumbers.forEach(number => {
             const currentValue = parseInt(number.textContent) || 0;
             
-            // Simulation d'une légère variation
             if (Math.random() > 0.8) {
                 const variation = Math.random() > 0.5 ? 1 : -1;
                 const newValue = Math.max(0, currentValue + variation);
@@ -573,7 +557,6 @@ class KayakDashboardManager {
     // ===== GESTION DES ÉVÉNEMENTS =====
     handleResize() {
         console.log('Redimensionnement détecté');
-        // Réajustement des notifications si nécessaire
         this.state.notifications.forEach(notification => {
             if (window.innerWidth < 768) {
                 notification.style.right = '10px';
@@ -592,7 +575,6 @@ class KayakDashboardManager {
             this.pauseAnimations();
         } else {
             this.resumeAnimations();
-            // Mise à jour immédiate de l'heure au retour
             this.updateTime();
         }
     }
@@ -621,7 +603,6 @@ class KayakDashboardManager {
     }
 
     checkSystemStatus() {
-        // Vérification du support des fonctionnalités
         const checks = {
             localStorage: this.checkLocalStorage(),
             dateSupport: this.checkDateSupport(),
@@ -679,7 +660,6 @@ class KayakDashboardManager {
     }
 
     startRealTimeUpdates() {
-        // Mise à jour périodique des données (toutes les 30 secondes)
         this.intervals.dataUpdate = setInterval(() => {
             if (!document.hidden) {
                 this.updateRealTimeData();
@@ -704,9 +684,13 @@ class KayakDashboardManager {
         return 1 - Math.pow(1 - t, 3);
     }
 
+    // Méthodes utilitaires pour les fonctionnalités spécifiques
+    showComingSoon() {
+        this.showNotification('Cette fonctionnalité sera bientôt disponible!', 'info');
+    }
+
     // ===== NETTOYAGE =====
     destroy() {
-        // Nettoyage des intervals
         if (this.state.timeInterval) {
             clearInterval(this.state.timeInterval);
         }
@@ -715,7 +699,6 @@ class KayakDashboardManager {
             if (interval) clearInterval(interval);
         });
         
-        // Suppression des notifications
         this.clearAllNotifications();
         
         console.log('Dashboard nettoyé');
@@ -770,7 +753,6 @@ const additionalStyles = `
         color: #333;
     }
     
-    /* Animations pour les éléments de temps */
     .live-time {
         animation: pulse 2s infinite;
     }
@@ -780,7 +762,6 @@ const additionalStyles = `
         50% { opacity: 0.8; }
     }
     
-    /* Styles responsives pour les notifications */
     @media (max-width: 768px) {
         .dashboard-notification {
             right: 10px !important;
@@ -790,10 +771,11 @@ const additionalStyles = `
         }
     }
     
-    /* Effets de focus pour l'accessibilité */
     .stat-card:focus,
     .management-card:focus,
-    .chart-card:focus {
+    .chart-card:focus,
+    .service-card:focus,
+    .feature-card:focus {
         outline: 2px solid #667eea;
         outline-offset: 2px;
     }
@@ -805,14 +787,24 @@ styleSheet.textContent = additionalStyles;
 document.head.appendChild(styleSheet);
 
 // ===== INITIALISATION =====
-// Attendre que le DOM soit chargé
+// Variable globale pour exposer les fonctions utilitaires
+window.showComingSoon = function() {
+    if (window.KayakDashboard) {
+        window.KayakDashboard.showComingSoon();
+    } else {
+        alert('Cette fonctionnalité sera bientôt disponible!');
+    }
+};
+
+// Initialisation automatique
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         window.KayakDashboard = new KayakDashboardManager();
+        window.KayakDashboard.handleDOMReady();
     });
 } else {
-    // Le DOM est déjà chargé
     window.KayakDashboard = new KayakDashboardManager();
+    window.KayakDashboard.handleDOMReady();
 }
 
 // Export pour utilisation externe

@@ -4,7 +4,7 @@ declare(strict_types=1);
 // --- Chemin de base ---
 define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 
-// --- Récupère l’URI demandée ---
+// --- Récupère l'URI demandée ---
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 
 // Retire le préfixe BASE_PATH
@@ -16,12 +16,62 @@ if (strpos($uri, BASE_PATH) === 0) {
 if ($uri === '' || $uri === '/index.php') {
     $uri = '/';
 }
-// var_dump($uri);
-// exit;
+
+// --- Gestion des assets statiques (CSS, JS, images) ---
+if (preg_match('/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/', $uri)) {
+    $filePath = __DIR__ . $uri;
+    
+    if (file_exists($filePath)) {
+        // Définir le type MIME approprié
+        $mimeTypes = [
+            'js' => 'application/javascript',
+            'css' => 'text/css',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'ico' => 'image/x-icon',
+            'svg' => 'image/svg+xml',
+            'woff' => 'font/woff',
+            'woff2' => 'font/woff2',
+            'ttf' => 'font/ttf',
+            'eot' => 'application/vnd.ms-fontobject',
+            'map' => 'application/json'
+        ];
+        
+        $extension = strtolower(pathinfo($uri, PATHINFO_EXTENSION));
+        $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
+        
+        header("Content-Type: $mimeType");
+        
+        // Headers de cache pour les assets
+        if (in_array($extension, ['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg', 'woff', 'woff2', 'ttf', 'eot'])) {
+            header("Cache-Control: public, max-age=31536000"); // Cache pour 1 an
+            header("Expires: " . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
+        }
+        
+        // Headers de sécurité pour JavaScript
+        if ($extension === 'js') {
+            header("X-Content-Type-Options: nosniff");
+        }
+        
+        // Headers de sécurité pour les polices
+        if (in_array($extension, ['woff', 'woff2', 'ttf', 'eot'])) {
+            header("Access-Control-Allow-Origin: *");
+        }
+        
+        readfile($filePath);
+        exit;
+    } else {
+        http_response_code(404);
+        exit('Asset non trouvé');
+    }
+}
 
 // --- Table de redirections ---
 $redirects = [
     '/ancienne-page' => '/nouvelle-page',
+    '/dashboard_admin' => '/dashboardadmin', // Redirection pour compatibilité
 ];
 if (isset($redirects[$uri])) {
     header("Location: " . BASE_PATH . $redirects[$uri], true, 301);
@@ -84,34 +134,51 @@ switch ($uri) {
         
     case '/annuler_reservation':
         require __DIR__ . '/../src/template/annuler_reservation.php';
-    break;
+        break;
     
     case '/mes_hebergement':
         require __DIR__ . '/../src/template/mes_hebergement.php';
-    break;
+        break;
     
     case '/gestionuser':
         require __DIR__ . '/../src/template/gestion/gestionuser.php';
-    break;
+        break;
     
     case '/admintest':
         require __DIR__ . '/../src/template/admin/admintest.php';
-    break;
+        break;
 
     case '/listepointsarret':
         require __DIR__ . '/../src/template/liste_points_arret.php';
-    break;
+        break;
     
     case '/gestionpointsarret':
         require __DIR__ . '/../src/template/gestion/gestion_points_arret.php';
-    break;
+        break;
+        
     case '/composer_itineraire':
-        require __DIR__ . '/../src/template/composer_itineraire';
-    break;
+        require __DIR__ . '/../src/template/composer_itineraire.php';
+        break;
+
+    // Routes pour les pages client
+    case '/packs':
+        require __DIR__ . '/../src/template/client/packs.php';
+        break;
+        
+    case '/hebergements':
+        require __DIR__ . '/../src/template/client/hebergements.php';
+        break;
+        
+    case '/services':
+        require __DIR__ . '/../src/template/client/services.php';
+        break;
+        
+    case '/profil':
+        require __DIR__ . '/../src/template/client/profil.php';
+        break;
 
     default:
         http_response_code(404);
         echo "<h1>404 - Page introuvable</h1><p>URI = $uri</p>";
         break;
 }
-
