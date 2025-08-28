@@ -125,7 +125,7 @@ $stats = [
         <div class="header">
             <h1>Gestion Messagerie Service Commercial</h1>
             <p>Supervision des conversations clients et assignation des commerciaux</p>
-            <a href="dashboard_admin.php" class="btn">← Dashboard</a>
+            <a href="dashboardadmin.php" class="btn">← Dashboard</a>
         </div>
 
         <?php if ($message): ?>

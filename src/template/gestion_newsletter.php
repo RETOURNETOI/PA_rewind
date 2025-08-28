@@ -131,7 +131,7 @@ if ($stats['campagnes_envoyees'] > 0) {
         <div class="header">
             <h1>Gestion Newsletter</h1>
             <p>Création de campagnes email et gestion des abonnés</p>
-            <a href="dashboard_admin.php" class="btn">← Dashboard</a>
+            <a href="dashboardadmin.php" class="btn">← Dashboard</a>
         </div>
 
         <?php if ($message): ?>

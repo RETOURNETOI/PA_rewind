@@ -513,7 +513,7 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
                         <li>Photos et descriptions détaillées</li>
                     </ul>
                     <?php if ($isLoggedIn): ?>
-                        <a href="<?= BASE_PATH ?>/hebergements" class="btn btn-primary">Voir les hébergements</a>
+                        <a href="<?= BASE_PATH ?>/mes_hebergement" class="btn btn-primary">Voir les hébergements</a>
                     <?php else: ?>
                         <a href="<?= BASE_PATH ?>/inscription" class="btn btn-secondary">S'inscrire pour réserver</a>
                     <?php endif; ?>

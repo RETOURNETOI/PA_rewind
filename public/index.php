@@ -50,7 +50,7 @@ switch ($uri) {
         require __DIR__ . '/../src/template/traitement_connexion.php';
         break;
 
-    case '/dashboard_admin':
+    case '/dashboardadmin':
         require __DIR__ . '/../src/template/dashboard_admin.php';
         break;
 
@@ -97,8 +97,13 @@ switch ($uri) {
     case '/admintest':
         require __DIR__ . '/../src/template/admintest.php';
     break;
+
     case '/listepointsarret':
-        require __DIR__ . '/../src/template//liste_points_arret.php';
+        require __DIR__ . '/../src/template/liste_points_arret.php';
+    break;
+    
+    case '/gestionpointsarret':
+        require __DIR__ . '/../src/template/gestion_points_arret.php';
     break;
 
     default:

@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
-require_once '../controller/PointArretController.php';
+require_once __DIR__.'/../controller/PointArretController.php';
 $controller = new PointArretController();
 
 $message = "";
@@ -60,7 +60,7 @@ $points = $controller->getAll();
         <div class="header">
             <h1>🗺️ Gestion des Points d'Arrêt Loire</h1>
             <p>Administrez les étapes le long de la Loire</p>
-            <a href="dashboard_admin.php" class="btn">← Retour Dashboard</a>
+            <a href="<?= BASE_PATH ?>/dashboardadmin" class="btn">← Retour Dashboard</a>
         </div>
 
         <?php if ($message): ?>

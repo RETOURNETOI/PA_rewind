@@ -6,8 +6,8 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
-require_once '../controller/HebergementController.php';
-require_once '../controller/PointArretController.php';
+require_once __DIR__.'/../controller/HebergementController.php';
+require_once __DIR__.'/../controller/PointArretController.php';
 
 $hebergementCtrl = new HebergementController();
 $pointCtrl = new PointArretController();
@@ -93,8 +93,8 @@ foreach ($hebergements as $heb) {
                 <h2>Point: <?= htmlspecialchars($selectedPoint['nom']) ?></h2>
                 <a href="gestion_hebergements.php" class="btn btn-secondary">Voir tous les hébergements</a>
             <?php endif; ?>
-            <a href="dashboard_admin.php" class="btn">← Dashboard</a>
-            <a href="gestion_points_arret.php" class="btn">Points d'Arrêt</a>
+            <a href="<?= BASE_PATH ?>/dashboardadmin" class="btn">← Dashboard</a>
+            <a href="<?= BASE_PATH ?>/gestionpointsarret" class="btn">Points d'Arrêt</a>
         </div>
 
         <?php if ($message): ?>
