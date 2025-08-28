@@ -91,7 +91,7 @@ switch ($uri) {
     break;
     
     case '/gestionuser':
-        require __DIR__ . '/../src/template/gestionuser.php';
+        require __DIR__ . '/../src/template/gestion/gestionuser.php';
     break;
     
     case '/admintest':
@@ -99,6 +99,9 @@ switch ($uri) {
     break;
     case '/listepointsarret':
         require __DIR__ . '/../src/template//liste_points_arret.php';
+    break;
+    case '/composer_itineraire':
+        require __DIR__ . '/../src/template/composer_itineraire';
     break;
 
     default:

@@ -451,7 +451,7 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             
             <div class="hero-actions">
                 <?php if ($isLoggedIn): ?>
-                    <a href="<?= BASE_PATH ?>/composer-itineraire" class="btn btn-primary btn-large">🗺️ Composer mon itinéraire</a>
+                    <a href="<?= BASE_PATH ?>/composer_itineraire" class="btn btn-primary btn-large">🗺️ Composer mon itinéraire</a>
                     <a href="<?= BASE_PATH ?>/packs" class="btn btn-secondary btn-large">📦 Voir les packs</a>
                 <?php else: ?>
                     <a href="<?= BASE_PATH ?>/inscription" class="btn btn-primary btn-large">🚀 Commencer l'aventure</a>
