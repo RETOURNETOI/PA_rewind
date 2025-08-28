@@ -1,6 +1,9 @@
 <?php
 // dashboard_admin.php
 
+// --- Configuration du fuseau horaire ---
+date_default_timezone_set('Europe/Paris');
+
 // --- Vérification des droits admin ---
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
@@ -423,6 +426,18 @@ try {
             transform: translateY(-1px);
         }
 
+        /* Style pour l'heure en temps réel */
+        .live-time {
+            font-weight: bold;
+            color: #667eea;
+            transition: color 0.3s ease;
+        }
+
+        .current-time, .current-date {
+            color: #999;
+            transition: color 0.2s ease;
+        }
+
         @media (max-width: 768px) {
             .top-bar {
                 flex-direction: column;
@@ -454,11 +469,11 @@ try {
         <div class="top-bar">
             <div class="admin-info">
                 👋 Bienvenue <?= isset($_SESSION['user_nom']) ? htmlspecialchars($_SESSION['user_nom']) : 'Admin' ?>
-                <span style="color: #999;">• <?= date('d/m/Y H:i') ?></span>
+                <span style="color: #999;">• <span class="current-time live-time" id="header-time">Chargement...</span></span>
             </div>
             <div>
-                <a href="<?= BASE_PATH ?>/ajouter_hebergement" class="action-btn">ajt hebergement </a>
-                <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">⚙️ gestion utilisatuer</a>
+                <a href="<?= BASE_PATH ?>/ajouter_hebergement" class="action-btn">ajt hebergement</a>
+                <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">⚙️ gestion utilisateur</a>
                 <a href="logout.php" class="logout-btn">Se déconnecter</a>
             </div>
         </div>
@@ -573,6 +588,7 @@ try {
                 </div>
             </div>
         </div>
+
         <div class="charts-grid">
             <!-- Répartition des utilisateurs -->
             <?php if (isset($usersByRole) && !empty($usersByRole)): ?>
@@ -819,10 +835,10 @@ try {
             <h3>ℹ️ Informations Système</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 15px;">
                 <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                    <div style="font-size: 1.5em; font-weight: bold; color: #333;">
-                        <?= date('H:i') ?>
+                    <div style="font-size: 1.5em; font-weight: bold; color: #333;" class="current-time live-time" id="system-time">
+                        Chargement...
                     </div>
-                    <div style="color: #666; font-size: 0.9em;">Heure actuelle</div>
+                    <div style="color: #666; font-size: 0.9em;">Heure locale</div>
                 </div>
                 <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
                     <div style="font-size: 1.2em; font-weight: bold; color: #333;">
@@ -841,7 +857,214 @@ try {
 
     </div>
 
-    <!-- Script pour les animations -->
-    <script src="path/to/kayak-dashboard-enhanced.js"></script>
+    <!-- Script pour la gestion du temps et animations -->
+    <script>
+        // Configuration du fuseau horaire et mise à jour de l'heure
+        class TimeManager {
+            constructor() {
+                this.timezone = 'Europe/Paris';
+                this.timeElements = [];
+                this.updateInterval = null;
+                this.init();
+            }
+
+            init() {
+                this.findTimeElements();
+                this.startTimeUpdates();
+                this.updateTime(); // Mise à jour immédiate
+            }
+
+            findTimeElements() {
+                this.timeElements = [
+                    document.getElementById('header-time'),
+                    document.getElementById('system-time'),
+                    ...document.querySelectorAll('.current-time')
+                ].filter(el => el !== null);
+            }
+
+            updateTime() {
+                const now = new Date();
+                
+                // Format pour l'en-tête (complet)
+                const fullTimeFormat = now.toLocaleString('fr-FR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZone: this.timezone
+                });
+
+                // Format pour l'heure système (court)
+                const shortTimeFormat = now.toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZone: this.timezone
+                });
+
+                // Mise à jour des éléments
+                const headerTime = document.getElementById('header-time');
+                const systemTime = document.getElementById('system-time');
+
+                if (headerTime) {
+                    headerTime.textContent = fullTimeFormat;
+                    this.animateTimeUpdate(headerTime);
+                }
+
+                if (systemTime) {
+                    systemTime.textContent = shortTimeFormat;
+                    this.animateTimeUpdate(systemTime);
+                }
+
+                // Mise à jour des autres éléments de temps
+                document.querySelectorAll('.current-time:not(#header-time):not(#system-time)').forEach(el => {
+                    el.textContent = shortTimeFormat;
+                    this.animateTimeUpdate(el);
+                });
+            }
+
+            animateTimeUpdate(element) {
+                element.style.color = '#764ba2';
+                setTimeout(() => {
+                    element.style.color = '';
+                }, 150);
+            }
+
+            startTimeUpdates() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                }
+                
+                this.updateInterval = setInterval(() => {
+                    this.updateTime();
+                }, 1000);
+            }
+
+            destroy() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                }
+            }
+        }
+
+        // Gestionnaire des animations des barres de progression
+        class ProgressBarManager {
+            constructor() {
+                this.progressBars = document.querySelectorAll('.progress-fill');
+                this.init();
+            }
+
+            init() {
+                this.animateProgressBars();
+            }
+
+            animateProgressBars() {
+                this.progressBars.forEach((bar, index) => {
+                    const targetWidth = bar.style.width;
+                    
+                    // Préparation de l'animation
+                    bar.style.width = '0%';
+                    bar.style.transition = 'none';
+                    
+                    // Animation échelonnée
+                    setTimeout(() => {
+                        bar.style.transition = 'width 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                        bar.style.width = targetWidth;
+                    }, index * 150 + 500);
+                });
+            }
+        }
+
+        // Gestionnaire des effets de cartes
+        class CardEffectsManager {
+            constructor() {
+                this.cards = document.querySelectorAll('.stat-card, .management-card, .chart-card');
+                this.init();
+            }
+
+            init() {
+                this.setupCardHoverEffects();
+                this.animateCardsOnLoad();
+            }
+
+            setupCardHoverEffects() {
+                this.cards.forEach(card => {
+                    card.addEventListener('mouseenter', () => this.animateCardEnter(card));
+                    card.addEventListener('mouseleave', () => this.animateCardLeave(card));
+                });
+            }
+
+            animateCardEnter(card) {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+                card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
+            }
+
+            animateCardLeave(card) {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            }
+
+            animateCardsOnLoad() {
+                this.cards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100 + 300);
+                });
+            }
+        }
+
+        // Gestionnaire principal du dashboard
+        class DashboardManager {
+            constructor() {
+                this.timeManager = null;
+                this.progressBarManager = null;
+                this.cardEffectsManager = null;
+                this.init();
+            }
+
+            init() {
+                document.addEventListener('DOMContentLoaded', () => {
+                    this.initializeComponents();
+                });
+            }
+
+            initializeComponents() {
+                this.timeManager = new TimeManager();
+                this.progressBarManager = new ProgressBarManager();
+                this.cardEffectsManager = new CardEffectsManager();
+                
+                console.log('Dashboard Kayak Trip initialisé avec succès');
+            }
+
+            destroy() {
+                if (this.timeManager) this.timeManager.destroy();
+            }
+        }
+
+        // Initialisation automatique
+        const dashboardManager = new DashboardManager();
+
+        // Gestion de la visibilité de la page pour économiser les ressources
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                console.log('Page cachée - économie d\'énergie');
+            } else {
+                console.log('Page visible - reprise normale');
+            }
+        });
+
+        // Nettoyage avant fermeture
+        window.addEventListener('beforeunload', () => {
+            dashboardManager.destroy();
+        });
+    </script>
 </body>
 </html>
