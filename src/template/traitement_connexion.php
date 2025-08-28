@@ -37,7 +37,7 @@ if ($user) {
     // exit;
     switch ($_SESSION['user_role']) {
         case 'admin':
-            header("Location:". BASE_PATH ."/dashboard_admin");
+            header("Location:". BASE_PATH ."/dashboardadmin");
             break;
         case 'client':
             header("Location: " . BASE_PATH . "/user_dashboard");

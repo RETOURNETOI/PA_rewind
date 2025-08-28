@@ -172,7 +172,7 @@ $reservations = $controller->getReservationsByUser($_SESSION['user_id']);
             </table>
         <?php endif; ?>
 
-        <p style="text-align:center;"><a href="<?= BASE_PATH ?>/user_dashboard" class="button">Retour au tableau de bord</a></p>
+        <p style="text-align:center;"><a href="<?= BASE_PATH ?>/" class="button">Retour au tableau de bord</a></p>
     </div>
 </body>
 </html>

@@ -86,7 +86,7 @@ $total_reservations = array_sum($reservations_data);
         <div class="header">
             <h1>📊 Graphique Taux d'Occupation des Hébergements</h1>
             <p>Analyse des performances et statistiques de réservation</p>
-            <a href="dashboard_admin.php" class="btn">← Dashboard</a>
+            <a href="dashboardadmin.php" class="btn">← Dashboard</a>
             <a href="gestion_hebergements.php" class="btn">Gérer Hébergements</a>
         </div>
 

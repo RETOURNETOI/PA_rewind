@@ -142,7 +142,7 @@ $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c
         <div class="header">
             <h1>Gestion Offres Promotionnelles</h1>
             <p>Codes de réduction et plages tarifaires saisonnières</p>
-            <a href="dashboard_admin.php" class="btn">← Dashboard</a>
+            <a href="dashboardadmin.php" class="btn">← Dashboard</a>
         </div>
 
         <?php if ($message): ?>
