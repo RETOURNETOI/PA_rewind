@@ -78,17 +78,21 @@ switch ($uri) {
         require __DIR__ . '/../src/template/mes_reservation.php';
         break;
 
-        case '/traitement_reservation':
-            require __DIR__ . '/../src/template/traitement_reservation.php';
-            break;
-            
-        case '/annuler_reservation':
-            require __DIR__ . '/../src/template/annuler_reservation.php';
+    case '/traitement_reservation':
+        require __DIR__ . '/../src/template/traitement_reservation.php';
         break;
         
-        case '/mes_hebergement':
-            require __DIR__ . '/../src/template/mes_hebergement.php';
-        break;
+    case '/annuler_reservation':
+        require __DIR__ . '/../src/template/annuler_reservation.php';
+    break;
+    
+    case '/mes_hebergement':
+        require __DIR__ . '/../src/template/mes_hebergement.php';
+    break;
+    
+    case '/gestionuser':
+        require __DIR__ . '/../src/template/gestionuser.php';
+    break;
 
     default:
         http_response_code(404);

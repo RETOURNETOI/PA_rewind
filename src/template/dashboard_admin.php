@@ -457,8 +457,8 @@ try {
                 <span style="color: #999;">• <?= date('d/m/Y H:i') ?></span>
             </div>
             <div>
-                <a href="#" class="action-btn">🔔 Notifications</a>
-                <a href="#" class="action-btn">⚙️ Paramètres</a>
+                <a href="<?= BASE_PATH ?>/ajouter_hebergement" class="action-btn">ajt hebergement </a>
+                <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">⚙️ gestion utilisatuer</a>
                 <a href="logout.php" class="logout-btn">Se déconnecter</a>
             </div>
         </div>
