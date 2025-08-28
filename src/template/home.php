@@ -433,6 +433,9 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
                 <span class="live-time" id="current-time">Chargement...</span>
                 <?php if ($isLoggedIn): ?>
                     <span>Bonjour, <?= htmlspecialchars($userName) ?></span>
+                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                    <a href="<?= BASE_PATH ?>/dashboardadmin" class="btn btn-primary">Dashboard</a>
+                <?php endif; ?>
                     <a href="<?= BASE_PATH ?>/profil" class="btn btn-secondary">Mon Profil</a>
                     <a href="<?= BASE_PATH ?>/logout" class="btn btn-secondary">Déconnexion</a>
                 <?php else: ?>
