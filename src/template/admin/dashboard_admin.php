@@ -11,14 +11,14 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
-require_once  __DIR__ . '/../bdd/Connexion.php';
-require_once  __DIR__ . '/../controller/PackController.php';
-require_once  __DIR__ . '/../controller/ServiceController.php';
-require_once  __DIR__ . '/../controller/UtilisateurController.php';
-require_once  __DIR__ . '/../controller/HebergementController.php';
-require_once  __DIR__ . '/../controller/PointArretController.php';
-require_once  __DIR__ . '/../controller/CommandeController.php';
-require_once  __DIR__ . '/../controller/DashboardStats.php';
+require_once  __DIR__ . '/../../bdd/Connexion.php';
+require_once  __DIR__ . '/../../controller/PackController.php';
+require_once  __DIR__ . '/../../controller/ServiceController.php';
+require_once  __DIR__ . '/../../controller/UtilisateurController.php';
+require_once  __DIR__ . '/../../controller/HebergementController.php';
+require_once  __DIR__ . '/../../controller/PointArretController.php';
+require_once  __DIR__ . '/../../controller/CommandeController.php';
+require_once  __DIR__ . '/../../controller/DashboardStats.php';
 
 // --- Utilisation de la classe Connexion pour obtenir PDO ---
 $connexion = new Connexion();

@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
-require_once __DIR__.'/../controller/PointArretController.php';
+require_once __DIR__.'/../../controller/PointArretController.php';
 $controller = new PointArretController();
 
 $message = "";

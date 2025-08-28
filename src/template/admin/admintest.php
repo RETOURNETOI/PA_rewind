@@ -3,12 +3,12 @@
 
 
 // --- Inclusion des classes & contrôleurs ---
-require_once  __DIR__ . '/../bdd/Connexion.php';
-require_once  __DIR__ . '/../controller/PackController.php';
-require_once  __DIR__ . '/../controller/ServiceController.php';
-require_once  __DIR__ . '/../model/Service.php';
-require_once  __DIR__ . '/../controller/DashboardStats.php';
-require_once  __DIR__ . '/../model/Pack.php';
+require_once  __DIR__ . '/../../bdd/Connexion.php';
+require_once  __DIR__ . '/../../controller/PackController.php';
+require_once  __DIR__ . '/../../controller/ServiceController.php';
+require_once  __DIR__ . '/../../model/Service.php';
+require_once  __DIR__ . '/../../controller/DashboardStats.php';
+require_once  __DIR__ . '/../../model/Pack.php';
 // --- Connexion à la BDD ---
 $connexion = new Connexion();
 $db = $connexion->getPDO();

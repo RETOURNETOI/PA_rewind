@@ -51,7 +51,7 @@ switch ($uri) {
         break;
 
     case '/dashboardadmin':
-        require __DIR__ . '/../src/template/dashboard_admin.php';
+        require __DIR__ . '/../src/template/admin/dashboard_admin.php';
         break;
 
     case '/user_dashboard':
@@ -95,7 +95,7 @@ switch ($uri) {
     break;
     
     case '/admintest':
-        require __DIR__ . '/../src/template/admintest.php';
+        require __DIR__ . '/../src/template/admin/admintest.php';
     break;
 
     case '/listepointsarret':
