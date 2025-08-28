@@ -475,7 +475,7 @@ try {
                 <span style="color: #999;">• <span class="current-time live-time" id="header-time">Chargement...</span></span>
             </div>
             <div>
-                <a href="<?= BASE_PATH ?>/home" class="action-btn">home</a>
+                <a href="<?= BASE_PATH ?>/" class="action-btn">home</a>
                 <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">⚙️ gestion utilisateur</a>
                 <a href="logout.php" class="logout-btn">Se déconnecter</a>
             </div>
