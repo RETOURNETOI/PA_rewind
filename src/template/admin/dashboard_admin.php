@@ -3,7 +3,7 @@
 
 // --- Définition du chemin de base de l'application ---
 // Adapter ce chemin à votre structure de projet et URL
-define('BASE_PATH', '/PA_rewind/src');
+// define('BASE_PATH', '/PA_rewind/src');
 
 // --- Configuration du fuseau horaire ---
 date_default_timezone_set('Europe/Paris');
