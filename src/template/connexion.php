@@ -78,7 +78,7 @@
             <button type="submit">Se connecter</button>
         </form>
         <p><a href="mot_de_passe_oublie.php">Mot de passe oublié ?</a></p>
-        <p>Vous n'avez pas de compte ? <a href="inscription.php">Inscrivez-vous</a></p>
+        <p>Vous n'avez pas de compte ? <a href="<?= BASE_PATH ?>/inscription">Inscrivez-vous</a></p>
     </div>
 </body>
 </html>
