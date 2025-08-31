@@ -81,6 +81,10 @@ switch ($uri) {
         require __DIR__ . '/../src/template/connexion.php';
         break;
 
+    case '/traitement_connexion':
+        require __DIR__ . '/../src/template/traitement_connexion.php';
+        break;
+
     case '/inscription':
         require __DIR__ . '/../src/template/inscription.php';
         break;
