@@ -1,8 +1,11 @@
 <?php
 declare(strict_types=1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // --- Chemin de base ---
-define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
+define('BASE_PATH', '/PA_rewind/public');
 
 // --- Récupère l'URI demandée ---
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
@@ -62,7 +65,7 @@ if (preg_match('/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/', 
 }
 
 // --- Table de redirections ---
-$redirects = [
+/*$redirects = [
     '/ancienne-page' => '/nouvelle-page',
     '/dashboard_admin' => '/dashboardadmin',
 ];
@@ -70,7 +73,7 @@ if (isset($redirects[$uri])) {
     header("Location: " . BASE_PATH . $redirects[$uri], true, 301);
     exit;
 }
-
+*/
 // --- Router ---
 switch ($uri) {
     case '/':
@@ -127,6 +130,10 @@ switch ($uri) {
 
     case '/traitement_reservation':
         require __DIR__ . '/../src/template/traitement_reservation.php';
+        break;
+
+    case '/traitement_connexion':
+        require __DIR__ . '/../src/template/traitement_connexion.php';
         break;
         
     case '/annuler_reservation':

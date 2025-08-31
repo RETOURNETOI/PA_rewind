@@ -688,15 +688,14 @@ try {
             <div class="management-card">
                 <h3>🛏️ Hébergements & Disponibilités</h3>
                 <p>Gérez les hébergements par point d'arrêt. Contrôlez les fermetures pour travaux et disponibilités.</p>
-                <a href="ajouter_hebergement.php" class="btn">Gérer les Hébergements</a>
-                <a href="#" class="btn btn-secondary">Planifier Fermetures</a>
+                <a href="/mes_hebergement" class="btn">Gérer les Hébergements</a>
+                <a href="/mes_hebergement" class="btn btn-secondary">Planifier Fermetures</a>
             </div>
             
             <div class="management-card">
                 <h3>📍 Points d'Arrêt Loire</h3>
                 <p>Administrez les étapes le long de la Loire. Ajoutez descriptions, coordonnées GPS et attractions.</p>
-                <a href="gestion_points_arret.php" class="btn">Gérer les Points</a>
-                <a href="#" class="btn btn-secondary">Carte Interactive</a>
+                <a href="/gestionpointsarret" class="btn">Gérer les Points</a>
             </div>
             
             <div class="management-card">
