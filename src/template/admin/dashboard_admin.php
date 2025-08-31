@@ -477,7 +477,7 @@ try {
             <div>
                 <a href="<?= BASE_PATH ?>/" class="action-btn">home</a>
                 <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">⚙️ gestion utilisateur</a>
-                <a href="deco.php" class="deco-btn">Se déconnecter</a>
+                <a href="<?= BASE_PATH ?>/deco" class="btn btn-secondary">Déconnexion</a>
             </div>
         </div>
 

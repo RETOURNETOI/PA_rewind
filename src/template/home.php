@@ -537,7 +537,7 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
                     <a href="<?= BASE_PATH ?>/dashboardadmin" class="btn btn-primary">Dashboard</a>
                 <?php endif; ?>
                     <a href="<?= BASE_PATH ?>/profil" class="btn btn-secondary">Mon Profil</a>
-                    <a href="<?= BASE_PATH ?>/logout" class="btn btn-secondary">Déconnexion</a>
+                    <a href="<?= BASE_PATH ?>/deco" class="btn btn-secondary">Déconnexion</a>
                 <?php else: ?>
                     <div class="auth-buttons">
                         <a href="<?= BASE_PATH ?>/connexion" class="btn btn-secondary">Se connecter</a>
