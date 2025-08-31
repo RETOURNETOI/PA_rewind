@@ -85,12 +85,16 @@ switch ($uri) {
         require __DIR__ . '/../src/template/inscription.php';
         break;
 
-    case '/traitement_connexion':
+    case '/traiter_ajout_user':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             exit('Méthode non autorisée');
         }
-        require __DIR__ . '/../src/template/traitement_connexion.php';
+        require __DIR__ . '/../src/template/traiter_ajout_user.php';
+        break;
+
+    case '/deco':
+        require __DIR__ . '/../src/template/deco.php';
         break;
 
     case '/dashboardadmin':

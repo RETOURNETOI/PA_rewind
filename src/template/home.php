@@ -7,6 +7,13 @@ date_default_timezone_set('Europe/Paris');
 // Démarrage de la session pour vérifier si l'utilisateur est connecté
 session_start();
 
+// Récupérer les messages s'ils existent
+$successMessage = $_SESSION['success_message'] ?? null;
+$logoutMessage = $_SESSION['logout_message'] ?? null;
+
+// Nettoyer après récupération
+unset($_SESSION['success_message'], $_SESSION['logout_message']);
+
 // Variables pour l'affichage conditionnel
 $isLoggedIn = isset($_SESSION['user_id']);
 $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
@@ -36,6 +43,54 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        /* Messages système améliorés */
+        .message-container {
+            margin-bottom: 30px;
+        }
+
+        .message {
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            animation: messageSlideIn 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: messageShimmer 2s ease-in-out;
+        }
+
+        .message-success {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .message-info {
+            background: linear-gradient(135deg, #2196f3, #42a5f5);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .message-icon {
+            font-size: 1.3em;
+            margin-right: 10px;
+            display: inline-block;
+            animation: messageBounce 1s ease-in-out;
         }
 
         /* Header */
@@ -383,6 +438,11 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             .section-title {
                 font-size: 2em;
             }
+
+            .message {
+                padding: 15px 20px;
+                font-size: 1em;
+            }
         }
 
         /* Animations */
@@ -395,6 +455,27 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes messageShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes messageBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .service-card, .feature-card {
@@ -424,6 +505,25 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
 </head>
 <body>
     <div class="container">
+        <!-- Messages système -->
+        <?php if ($successMessage || $logoutMessage): ?>
+        <div class="message-container">
+            <?php if ($successMessage): ?>
+                <div class="message message-success">
+                    <span class="message-icon">🎉</span>
+                    <?= htmlspecialchars($successMessage) ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($logoutMessage): ?>
+                <div class="message message-info">
+                    <span class="message-icon">👋</span>
+                    <?= htmlspecialchars($logoutMessage) ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+
         <!-- Header -->
         <header class="header">
             <div class="logo">
@@ -688,10 +788,25 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             });
         }
 
+        // Gestion automatique des messages (disparition après 5 secondes)
+        function autoHideMessages() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach((message, index) => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        message.remove();
+                    }, 300);
+                }, 5000 + (index * 500)); // Délai différent si plusieurs messages
+            });
+        }
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             const timeManager = new TimeManager();
             animateOnScroll();
+            autoHideMessages();
             
             // Animation d'entrée pour les éléments
             setTimeout(() => {

@@ -107,7 +107,7 @@ try {
             font-weight: 500;
         }
 
-        .logout-btn {
+        .deco-btn {
             padding: 8px 16px;
             background: #ff6b6b;
             color: white;
@@ -117,7 +117,7 @@ try {
             transition: all 0.3s ease;
         }
 
-        .logout-btn:hover {
+        .deco-btn:hover {
             background: #ff5252;
             transform: translateY(-1px);
         }
@@ -477,7 +477,7 @@ try {
             <div>
                 <a href="<?= BASE_PATH ?>/" class="action-btn">home</a>
                 <a href="<?= BASE_PATH ?>/gestionuser" class="action-btn">⚙️ gestion utilisateur</a>
-                <a href="logout.php" class="logout-btn">Se déconnecter</a>
+                <a href="deco.php" class="deco-btn">Se déconnecter</a>
             </div>
         </div>
 
