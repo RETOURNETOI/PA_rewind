@@ -641,16 +641,5 @@ unset($_SESSION['logout_message']);
             }
         });
     </script>
-=======
-        ?>
-        <form class="login-form" action="<?= BASE_PATH ?>/traitement_connexion" method="post">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
-            <button type="submit">Se connecter</button>
-        </form>
-        <p><a href="mot_de_passe_oublie.php">Mot de passe oublié ?</a></p>
-        <p>Vous n'avez pas de compte ? <a href="<?= BASE_PATH ?>/inscription">Inscrivez-vous</a></p>
-    </div>
->>>>>>> f8538560373cf4eb917bdf85869c686569a29502
 </body>
 </html>
