@@ -701,9 +701,9 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
                 </div>
                 <div class="footer-section">
                     <h4>📞 Contact</h4>
-                    <p>Téléphone: 02 XX XX XX XX</p>
+                    <p>Téléphone: 07 38 46 12 24</p>
                     <p>Email: contact@kayaktriploirecom</p>
-                    <p>Adresse: Loire Valley, France</p>
+                    <p>Adresse: 45 cascade de la Loire, France</p>
                 </div>
                 <div class="footer-section">
                     <h4>🔗 Liens utiles</h4>
