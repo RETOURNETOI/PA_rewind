@@ -3,9 +3,6 @@ require_once __DIR__.'/../../controller/UtilisateurController.php';
 
 $controller = new UtilisateurController();
 
-// ===================
-// Gestion des actions
-// ===================
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,7 +21,6 @@ if (isset($_GET['supprimer'])) {
     $message = $success ? "✅ Utilisateur supprimé." : "❌ Erreur lors de la suppression.";
 }
 
-// Récupération de la liste
 $utilisateurs = $controller->AfficherTous();
 ?>
 
@@ -51,7 +47,6 @@ $utilisateurs = $controller->AfficherTous();
         <p class="message"><?= htmlspecialchars($message) ?></p>
     <?php endif; ?>
 
-    <!-- Formulaire d'ajout -->
     <h2>➕ Ajouter un utilisateur</h2>
     <form method="post">
         <input type="text" name="nom" placeholder="Nom" required>
@@ -67,7 +62,6 @@ $utilisateurs = $controller->AfficherTous();
         <button type="submit" name="ajouter">Ajouter</button>
     </form>
 
-    <!-- Tableau des utilisateurs -->
     <h2>📋 Liste des utilisateurs</h2>
     <table>
         <tr>
@@ -83,7 +77,6 @@ $utilisateurs = $controller->AfficherTous();
                 <td><?= $u['telephone'] !== null ? htmlspecialchars($u['telephone']) : '' ?></td>
                 <td><?= htmlspecialchars($u['role']) ?></td>
                 <td>
-                    <!-- Formulaire de modification inline -->
                     <form method="post" style="display:inline-block;">
                         <input type="hidden" name="id" value="<?= $u['id_utilisateur'] ?>">
                         <input type="text" name="nom" value="<?= htmlspecialchars($u['nom']) ?>">
@@ -97,7 +90,6 @@ $utilisateurs = $controller->AfficherTous();
                         </select>
                         <button type="submit" name="modifier">Modifier</button>
                     </form>
-                    <!-- Bouton suppression -->
                     <a href="?supprimer=<?= $u['id_utilisateur'] ?>" onclick="return confirm('Supprimer cet utilisateur ?')">🗑️ Supprimer</a>
                 </td>
             </tr>

@@ -1,24 +1,16 @@
 <?php
-// admin_test.php
-
-
-// --- Inclusion des classes & contrôleurs ---
 require_once  __DIR__ . '/../../bdd/Connexion.php';
 require_once  __DIR__ . '/../../controller/PackController.php';
 require_once  __DIR__ . '/../../controller/ServiceController.php';
 require_once  __DIR__ . '/../../model/Service.php';
 require_once  __DIR__ . '/../../controller/DashboardStats.php';
 require_once  __DIR__ . '/../../model/Pack.php';
-// --- Connexion à la BDD ---
 $connexion = new Connexion();
 $db = $connexion->getPDO();
 
-
-// --- Instanciation des contrôleurs ---
 $packCtrl = new PackController();
 $serviceCtrl = new ServiceController();
 
-// --- Variables pour conserver les valeurs postées ---
 $packNom = $_POST['nom_pack'] ?? '';
 $packDesc = $_POST['description_pack'] ?? '';
 $packPrix = $_POST['prix_pack'] ?? '';
@@ -26,7 +18,6 @@ $serviceNom = $_POST['nom_service'] ?? '';
 $serviceDesc = $_POST['description_service'] ?? '';
 $servicePrix = $_POST['prix_service'] ?? '';
 
-// --- Gestion des actions ---
 $msg = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -37,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $p = new Pack($_POST['nom_pack'], $_POST['description_pack'], (float)$_POST['prix_pack']);
                 if ($packCtrl->ajouter($p)) $msg = "Pack ajouté avec succès !";
                 else $msg = "Erreur lors de l'ajout du pack.";
-                // Conserver valeurs
                 $packNom = $_POST['nom_pack'];
                 $packDesc = $_POST['description_pack'];
                 $packPrix = $_POST['prix_pack'];
@@ -67,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ];
                 if ($serviceCtrl->ajouter($data)) $msg = "Service ajouté avec succès !";
                 else $msg = "Erreur lors de l'ajout du service.";
-                // Conserver valeurs
                 $serviceNom = $_POST['nom_service'];
                 $serviceDesc = $_POST['description_service'];
                 $servicePrix = $_POST['prix_service'];
@@ -113,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <h1>Interface d'administration - Packs et Services</h1>
 <p style="color:green;"><?= $msg ?></p>
 
-<!-- ------------------- GESTION PACKS ------------------- -->
 <h2>Ajouter un Pack</h2>
 <form method="post">
     <input type="hidden" name="action" value="add_pack">
@@ -148,7 +136,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php endforeach; ?>
 </table>
 
-<!-- ------------------- GESTION SERVICES ------------------- -->
 <h2>Ajouter un Service</h2>
 <form method="post">
     <input type="hidden" name="action" value="add_service">

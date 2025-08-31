@@ -1,29 +1,22 @@
 <?php 
-// composer_itineraire.php - Page de composition d'itinéraire
 
-// Configuration du fuseau horaire
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session
 session_start();
 
-// Définir BASE_PATH si elle n'existe pas déjà
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 }
 
-// Vérifier que l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: ' . BASE_PATH . '/connexion');
     exit;
 }
 
-// Inclure les contrôleurs nécessaires
 require_once __DIR__ . '/../controller/PointArretController.php';
 require_once __DIR__ . '/../controller/HebergementController.php';
 require_once __DIR__ . '/../controller/ServiceController.php';
 
-// Récupérer les données
 $pointController = new PointArretController();
 $hebergementController = new HebergementController();
 $serviceController = new ServiceController();
@@ -31,7 +24,6 @@ $serviceController = new ServiceController();
 $pointsArret = $pointController->getAll();
 $services = $serviceController->getAll();
 
-// Variables pour l'affichage
 $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
 ?>
 
@@ -48,7 +40,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             box-sizing: border-box;
         }
 
-        /* Variables CSS pour le thème */
         :root {
             --bg-gradient-start: #667eea;
             --bg-gradient-end: #764ba2;
@@ -94,7 +85,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             padding: 20px;
         }
 
-        /* Toggle bouton mode sombre */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -118,7 +108,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             box-shadow: 0 6px 20px var(--shadow-hover);
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -190,7 +179,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Main Content */
         .main-content {
             display: grid;
             grid-template-columns: 1fr 400px;
@@ -250,7 +238,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             border-bottom: 2px solid var(--border-color);
         }
 
-        /* Points d'arrêt */
         .points-grid {
             display: grid;
             gap: 15px;
@@ -310,7 +297,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             display: flex;
         }
 
-        /* Hébergements */
         .hebergements-section {
             margin-top: 30px;
             display: none;
@@ -361,7 +347,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             color: var(--text-secondary);
         }
 
-        /* Services */
         .services-section {
             margin-top: 30px;
         }
@@ -401,7 +386,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             font-weight: bold;
         }
 
-        /* Sidebar résumé */
         .resume-section h3 {
             color: var(--text-primary);
             margin-bottom: 15px;
@@ -479,7 +463,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             transform: none;
         }
 
-        /* Instructions */
         .instructions {
             background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
             border-radius: 12px;
@@ -502,7 +485,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             margin: 5px 0;
         }
 
-        /* Footer simplifié */
         .footer {
             background: var(--footer-bg);
             backdrop-filter: blur(10px);
@@ -514,7 +496,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             border: 1px solid var(--card-border);
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -541,7 +522,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -561,7 +541,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             animation-delay: 0.2s;
         }
 
-        /* Transitions fluides */
         * {
             transition: background-color 0.3s ease, 
                        color 0.3s ease, 
@@ -572,10 +551,8 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
 </head>
 <body>
     <div class="container">
-        <!-- Bouton toggle mode sombre -->
         <button class="theme-toggle" id="themeToggle">🌙</button>
 
-        <!-- Header -->
         <header class="header">
             <div class="logo">
                 <a href="<?= BASE_PATH ?>/" style="text-decoration: none; color: inherit;">
@@ -590,16 +567,13 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             </div>
         </header>
 
-        <!-- Page Header -->
         <div class="page-header">
             <h1>Composer votre itinéraire</h1>
             <p>Créez votre parcours personnalisé sur la Loire en sélectionnant vos étapes et hébergements</p>
         </div>
 
         <div class="main-content">
-            <!-- Panel principal de composition -->
             <div class="composition-panel">
-                <!-- Instructions -->
                 <div class="instructions">
                     <h3>📋 Comment composer votre itinéraire :</h3>
                     <ol>
@@ -610,7 +584,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                     </ol>
                 </div>
 
-                <!-- Sélection des points d'arrêt -->
                 <section>
                     <h2 class="section-title">📍 Sélectionnez vos étapes</h2>
                     <div class="points-grid" id="pointsGrid">
@@ -626,15 +599,12 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                     </div>
                 </section>
 
-                <!-- Sélection des hébergements -->
                 <section class="hebergements-section" id="hebergementsSection">
                     <h2 class="section-title">🏨 Choisissez vos hébergements</h2>
                     <div id="hebergementsContainer">
-                        <!-- Les hébergements seront chargés dynamiquement -->
                     </div>
                 </section>
 
-                <!-- Services complémentaires -->
                 <section class="services-section">
                     <h2 class="section-title">🎒 Services complémentaires</h2>
                     <div class="services-grid">
@@ -657,7 +627,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 </section>
             </div>
 
-            <!-- Sidebar - Résumé -->
             <div class="sidebar">
                 <div class="resume-section">
                     <h3>📋 Résumé de votre itinéraire</h3>
@@ -696,7 +665,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                             Total estimé : 0€
                         </div>
 
-                        <!-- Champs cachés pour les données -->
                         <input type="hidden" name="etapes_data" id="etapes_data">
                         <input type="hidden" name="services_data" id="services_data">
 
@@ -708,14 +676,12 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             </div>
         </div>
 
-        <!-- Footer -->
         <footer class="footer">
             <p>© 2025 Kayak Trip Loire. Composez votre aventure personnalisée sur la Loire.</p>
         </footer>
     </div>
 
     <script>
-        // Gestion de l'heure en temps réel
         class TimeManager {
             constructor() {
                 this.timezone = 'Europe/Paris';
@@ -744,7 +710,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
         }
 
-        // Gestionnaire d'itinéraire
         class ItineraireManager {
             constructor() {
                 this.etapes = [];
@@ -760,17 +725,14 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
 
             bindEvents() {
-                // Sélection des points
                 document.querySelectorAll('.point-card').forEach(card => {
                     card.addEventListener('click', () => this.togglePoint(card));
                 });
 
-                // Sélection des services
                 document.querySelectorAll('.service-card').forEach(card => {
                     card.addEventListener('click', () => this.toggleService(card));
                 });
 
-                // Mise à jour du prix quand nb personnes change
                 document.getElementById('nb_personnes').addEventListener('input', () => {
                     this.updateTotalPrice();
                 });
@@ -781,11 +743,9 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 const pointNom = card.dataset.nom;
 
                 if (card.classList.contains('selected')) {
-                    // Désélectionner
                     this.removeEtape(pointId);
                     card.classList.remove('selected');
                 } else {
-                    // Sélectionner
                     this.addEtape(pointId, pointNom);
                     card.classList.add('selected');
                 }
@@ -807,7 +767,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             removeEtape(pointId) {
                 this.etapes = this.etapes.filter(e => e.id !== pointId);
                 delete this.hebergements[pointId];
-                // Réorganiser les ordres
                 this.etapes.forEach((etape, index) => {
                     etape.ordre = index + 1;
                 });
@@ -831,11 +790,9 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 const serviceNom = card.querySelector('.service-nom').textContent;
 
                 if (card.classList.contains('selected')) {
-                    // Désélectionner
                     this.services = this.services.filter(s => s.id !== serviceId);
                     card.classList.remove('selected');
                 } else {
-                    // Sélectionner
                     this.services.push({
                         id: serviceId,
                         nom: serviceNom,
@@ -848,8 +805,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
 
             async loadHebergements() {
-                // Cette fonction sera appelée pour chaque point sélectionné
-                // Pour l'instant, on simule des hébergements
                 this.hebergementsData = <?= json_encode($hebergementController->getAll()) ?>;
             }
 
@@ -884,7 +839,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                     container.appendChild(etapeDiv);
                 });
 
-                // Bind events pour les hébergements
                 this.bindHebergementEvents();
             }
 
@@ -921,22 +875,18 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 const hebPrix = parseFloat(card.dataset.prix);
                 const hebNom = card.querySelector('.hebergement-nom').textContent;
 
-                // Désélectionner les autres hébergements de cette étape
                 document.querySelectorAll(`[data-point="${pointId}"] .hebergement-card`).forEach(c => {
                     c.classList.remove('selected');
                 });
 
-                // Sélectionner cet hébergement
                 card.classList.add('selected');
 
-                // Mettre à jour les données
                 this.hebergements[pointId] = {
                     id: hebId,
                     nom: hebNom,
                     prix: hebPrix
                 };
 
-                // Mettre à jour l'étape
                 const etape = this.etapes.find(e => e.id === pointId);
                 if (etape) {
                     etape.hebergement = {
@@ -997,12 +947,10 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 const nbPersonnes = parseInt(document.getElementById('nb_personnes').value) || 1;
                 let total = 0;
 
-                // Prix des hébergements (par nuit * nb personnes)
                 Object.values(this.hebergements).forEach(heb => {
                     total += heb.prix * nbPersonnes;
                 });
 
-                // Prix des services
                 this.services.forEach(service => {
                     total += service.prix;
                 });
@@ -1012,7 +960,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
 
             updateFormData() {
-                // Préparer les données pour le formulaire
                 const etapesData = this.etapes.map(etape => ({
                     point_id: etape.id,
                     point_nom: etape.nom,
@@ -1049,7 +996,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
         }
 
-        // Gestionnaire de thème
         function initTheme() {
             const themeToggle = document.getElementById('themeToggle');
             
@@ -1073,7 +1019,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 }
             });
 
-            // Charger le thème sauvegardé
             try {
                 const savedTheme = localStorage.getItem('theme');
                 if (savedTheme === 'dark') {
@@ -1085,7 +1030,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
         }
 
-        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             const timeManager = new TimeManager();
             const itineraireManager = new ItineraireManager();

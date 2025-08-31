@@ -1,48 +1,34 @@
 <?php
-/**
- * panier_routes.php - Gestionnaire des routes AJAX pour le panier
- * À placer dans le dossier src/view/ ou src/api/
- */
-
-// Configuration du fuseau horaire
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session
 session_start();
 
-// Définir BASE_PATH si elle n'existe pas déjà
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 }
 
-// Headers pour les requêtes AJAX
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
 
-// Vérifier que l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Utilisateur non connecté']);
     exit;
 }
 
-// Inclure le contrôleur du panier
 require_once __DIR__ . '/../controller/PanierController.php';
 
 $panierController = new PanierController();
 $userId = $_SESSION['user_id'];
 
-// Récupérer l'action depuis l'URL
 $requestUri = $_SERVER['REQUEST_URI'];
 $path = parse_url($requestUri, PHP_URL_PATH);
 $pathParts = explode('/', trim($path, '/'));
 
-// Extraire l'action (dernière partie de l'URL)
 $action = end($pathParts);
 
-// Traitement selon la méthode HTTP
 $method = $_SERVER['REQUEST_METHOD'];
 
 try {
@@ -54,7 +40,6 @@ try {
             handlePostRequest($panierController, $userId, $action);
             break;
         case 'OPTIONS':
-            // Réponse pour les requêtes CORS preflight
             http_response_code(200);
             exit;
         default:
@@ -67,14 +52,10 @@ try {
     echo json_encode(['success' => false, 'message' => 'Erreur serveur interne']);
 }
 
-/**
- * Traiter les requêtes GET
- */
 function handleGetRequest($panierController, $userId, $action) {
     switch ($action) {
         case 'get':
         case 'panier':
-            // Récupérer le contenu du panier
             $items = $panierController->getPanierByUserId($userId);
             $total = $panierController->calculerTotal($userId);
             $count = $panierController->compterItems($userId);
@@ -88,7 +69,6 @@ function handleGetRequest($panierController, $userId, $action) {
             break;
 
         case 'count':
-            // Récupérer juste le nombre d'éléments
             $count = $panierController->compterItems($userId);
             echo json_encode([
                 'success' => true,
@@ -97,7 +77,6 @@ function handleGetRequest($panierController, $userId, $action) {
             break;
 
         case 'total':
-            // Récupérer juste le total
             $total = $panierController->calculerTotal($userId);
             echo json_encode([
                 'success' => true,
@@ -111,11 +90,7 @@ function handleGetRequest($panierController, $userId, $action) {
     }
 }
 
-/**
- * Traiter les requêtes POST
- */
 function handlePostRequest($panierController, $userId, $action) {
-    // Récupérer les données JSON
     $input = json_decode(file_get_contents('php://input'), true);
     
     if (json_last_error() !== JSON_ERROR_NONE) {
@@ -147,15 +122,11 @@ function handlePostRequest($panierController, $userId, $action) {
     }
 }
 
-/**
- * Ajouter un élément au panier
- */
 function handleAddItem($panierController, $userId, $input) {
     $type = $input['type'] ?? '';
     $itemId = $input['item_id'] ?? 0;
     $quantite = $input['quantity'] ?? 1;
 
-    // Validation des données
     if (!in_array($type, ['service', 'pack'])) {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Type d\'élément invalide']);
@@ -174,7 +145,6 @@ function handleAddItem($panierController, $userId, $input) {
         return;
     }
 
-    // Ajouter au panier
     if ($panierController->ajouterAuPanier($userId, $type, $itemId, $quantite)) {
         $newTotal = $panierController->calculerTotal($userId);
         $newCount = $panierController->compterItems($userId);
@@ -191,9 +161,6 @@ function handleAddItem($panierController, $userId, $input) {
     }
 }
 
-/**
- * Supprimer un élément du panier
- */
 function handleRemoveItem($panierController, $input) {
     $itemId = $input['item_id'] ?? 0;
 
@@ -214,9 +181,6 @@ function handleRemoveItem($panierController, $input) {
     }
 }
 
-/**
- * Mettre à jour la quantité d'un élément
- */
 function handleUpdateQuantity($panierController, $input) {
     $itemId = $input['item_id'] ?? 0;
     $quantite = $input['quantity'] ?? 1;
@@ -244,9 +208,6 @@ function handleUpdateQuantity($panierController, $input) {
     }
 }
 
-/**
- * Vider le panier
- */
 function handleClearPanier($panierController, $userId) {
     if ($panierController->viderPanier($userId)) {
         echo json_encode([

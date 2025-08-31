@@ -1,20 +1,13 @@
 <?php 
-// home.php - Page d'accueil client
-
-// Configuration du fuseau horaire
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session pour vérifier si l'utilisateur est connecté
 session_start();
 
-// Récupérer les messages s'ils existent
 $successMessage = $_SESSION['success_message'] ?? null;
 $logoutMessage = $_SESSION['logout_message'] ?? null;
 
-// Nettoyer après récupération
 unset($_SESSION['success_message'], $_SESSION['logout_message']);
 
-// Variables pour l'affichage conditionnel
 $isLoggedIn = isset($_SESSION['user_id']);
 $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
 ?>
@@ -45,7 +38,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             padding: 20px;
         }
 
-        /* Messages système améliorés */
         .message-container {
             margin-bottom: 30px;
         }
@@ -93,7 +85,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             animation: messageBounce 1s ease-in-out;
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -159,7 +150,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Hero Section */
         .hero {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -213,7 +203,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             border-radius: 25px;
         }
 
-        /* Services Grid */
         .services {
             margin-bottom: 40px;
         }
@@ -297,7 +286,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             font-weight: bold;
         }
 
-        /* Chat Section */
         .chat-section {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -343,7 +331,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             margin-right: 10px;
         }
 
-        /* Features Section */
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -382,7 +369,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             font-size: 0.9em;
         }
 
-        /* Footer */
         .footer {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -415,7 +401,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             color: white;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -445,7 +430,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -489,7 +473,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
         .service-card:nth-child(5) { animation-delay: 0.5s; }
         .service-card:nth-child(6) { animation-delay: 0.6s; }
 
-        /* Status indicators */
         .status-indicator {
             display: inline-block;
             padding: 4px 12px;
@@ -505,7 +488,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
 </head>
 <body>
     <div class="container">
-        <!-- Messages système -->
         <?php if ($successMessage || $logoutMessage): ?>
         <div class="message-container">
             <?php if ($successMessage): ?>
@@ -524,7 +506,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
         </div>
         <?php endif; ?>
 
-        <!-- Header -->
         <header class="header">
             <div class="logo">
                 🚣‍♂️ Kayak Trip Loire
@@ -547,7 +528,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             </div>
         </header>
 
-        <!-- Hero Section -->
         <section class="hero">
             <h1>🌊 Découvrez la Loire en Kayak</h1>
             <p>Vivez une aventure inoubliable le long de la Loire. Composez votre itinéraire, réservez vos hébergements et profitez de nos services personnalisés pour une expérience unique.</p>
@@ -563,7 +543,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             </div>
         </section>
 
-        <!-- Services Section -->
         <section class="services">
             <h2 class="section-title">🎯 Nos Services</h2>
             <div class="services-grid">
@@ -661,14 +640,12 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             </div>
         </section>
 
-        <!-- Chat Section -->
         <section class="chat-section">
             <h2>🤝 Besoin d'aide pour votre projet ?</h2>
             <p>Notre équipe commerciale est là pour vous accompagner dans la préparation de votre aventure sur la Loire.</p>
             <button class="chat-button" onclick="showComingSoon()">Discuter avec un conseiller</button>
         </section>
 
-        <!-- Features Section -->
         <section class="features">
             <div class="feature-card">
                 <span class="feature-icon">⭐</span>
@@ -692,7 +669,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-section">
@@ -726,7 +702,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
     </div>
 
     <script>
-        // Gestion de l'heure en temps réel
         class TimeManager {
             constructor() {
                 this.timezone = 'Europe/Paris';
@@ -766,12 +741,10 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             }
         }
 
-        // Fonctions utilitaires
         function showComingSoon() {
             alert('💬 Le chat en temps réel sera bientôt disponible!\n\nEn attendant, vous pouvez nous contacter par téléphone ou email.');
         }
 
-        // Animation des cartes au scroll
         function animateOnScroll() {
             const cards = document.querySelectorAll('.service-card, .feature-card');
             const observer = new IntersectionObserver((entries) => {
@@ -788,7 +761,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             });
         }
 
-        // Gestion automatique des messages (disparition après 5 secondes)
         function autoHideMessages() {
             const messages = document.querySelectorAll('.message');
             messages.forEach((message, index) => {
@@ -798,17 +770,15 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
                     setTimeout(() => {
                         message.remove();
                     }, 300);
-                }, 5000 + (index * 500)); // Délai différent si plusieurs messages
+                }, 5000 + (index * 500));
             });
         }
 
-        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             const timeManager = new TimeManager();
             animateOnScroll();
             autoHideMessages();
             
-            // Animation d'entrée pour les éléments
             setTimeout(() => {
                 document.querySelectorAll('.service-card, .feature-card').forEach((card, index) => {
                     setTimeout(() => {
@@ -821,7 +791,6 @@ $userName = $isLoggedIn ? ($_SESSION['user_nom'] ?? 'Utilisateur') : null;
             console.log('🚣‍♂️ Kayak Trip Loire - Interface client initialisée');
         });
 
-        // Gestion de la visibilité de la page
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 console.log('Page visible - reprise normale');

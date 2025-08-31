@@ -1,8 +1,4 @@
 <?php
-/**
- * PanierController.php
- * Contrôleur pour la gestion du panier de l'utilisateur
- */
 
 require_once __DIR__ . '/../bdd/Connexion.php';
 require_once __DIR__ . '/../model/PanierModel.php';
@@ -17,9 +13,6 @@ class PanierController {
         $this->panierModel = new PanierModel($this->pdo);
     }
 
-    /**
-     * Récupérer tous les éléments du panier d'un utilisateur
-     */
     public function getPanierByUserId($userId) {
         try {
             return $this->panierModel->getPanierByUserId($userId);
@@ -29,20 +22,14 @@ class PanierController {
         }
     }
 
-    /**
-     * Ajouter un élément au panier
-     */
     public function ajouterAuPanier($userId, $type, $itemId, $quantite = 1) {
         try {
-            // Vérifier si l'élément existe déjà dans le panier
             $existingItem = $this->panierModel->getPanierItem($userId, $type, $itemId);
             
             if ($existingItem) {
-                // Mettre à jour la quantité
                 $nouvelleQuantite = $existingItem['quantite'] + $quantite;
                 return $this->panierModel->updateQuantite($existingItem['id_panier'], $nouvelleQuantite);
             } else {
-                // Ajouter un nouvel élément
                 return $this->panierModel->ajouterItem($userId, $type, $itemId, $quantite);
             }
         } catch (Exception $e) {
@@ -51,9 +38,6 @@ class PanierController {
         }
     }
 
-    /**
-     * Supprimer un élément du panier
-     */
     public function supprimerDuPanier($panierId) {
         try {
             return $this->panierModel->supprimerItem($panierId);
@@ -63,9 +47,6 @@ class PanierController {
         }
     }
 
-    /**
-     * Vider complètement le panier d'un utilisateur
-     */
     public function viderPanier($userId) {
         try {
             return $this->panierModel->viderPanier($userId);
@@ -75,9 +56,6 @@ class PanierController {
         }
     }
 
-    /**
-     * Mettre à jour la quantité d'un élément du panier
-     */
     public function updateQuantite($panierId, $quantite) {
         try {
             if ($quantite <= 0) {
@@ -90,9 +68,6 @@ class PanierController {
         }
     }
 
-    /**
-     * Calculer le total du panier
-     */
     public function calculerTotal($userId) {
         try {
             return $this->panierModel->calculerTotal($userId);
@@ -102,9 +77,6 @@ class PanierController {
         }
     }
 
-    /**
-     * Compter le nombre d'éléments dans le panier
-     */
     public function compterItems($userId) {
         try {
             return $this->panierModel->compterItems($userId);
@@ -114,9 +86,6 @@ class PanierController {
         }
     }
 
-    /**
-     * Traiter les requêtes AJAX pour le panier
-     */
     public function handleAjaxRequest() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
@@ -229,9 +198,6 @@ class PanierController {
         ]);
     }
 
-    /**
-     * Transformer le panier en commande
-     */
     public function transformerEnCommande($userId) {
         try {
             $items = $this->getPanierByUserId($userId);
@@ -240,10 +206,8 @@ class PanierController {
                 return false;
             }
 
-            // Commencer une transaction
             $this->pdo->beginTransaction();
 
-            // Créer une nouvelle commande
             $stmt = $this->pdo->prepare(
                 "INSERT INTO commandes (id_utilisateur, date_commande, statut, prix_total) 
                  VALUES (?, NOW(), 'en_attente', ?)"
@@ -253,7 +217,6 @@ class PanierController {
             $stmt->execute([$userId, $total]);
             $commandeId = $this->pdo->lastInsertId();
 
-            // Transférer les items du panier vers les tables de commande
             foreach ($items as $item) {
                 if ($item['type'] === 'service') {
                     $stmt = $this->pdo->prepare(
@@ -270,15 +233,12 @@ class PanierController {
                 }
             }
 
-            // Vider le panier
             $this->viderPanier($userId);
 
-            // Valider la transaction
             $this->pdo->commit();
 
             return $commandeId;
         } catch (Exception $e) {
-            // Annuler la transaction en cas d'erreur
             $this->pdo->rollBack();
             error_log("Erreur lors de la transformation en commande: " . $e->getMessage());
             return false;

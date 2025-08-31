@@ -1,13 +1,8 @@
 <?php 
-// inscription.php - Page d'inscription avec style moderne
-
-// Configuration du fuseau horaire
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session
 session_start();
 
-// Définir BASE_PATH si elle n'existe pas déjà (pour compatibilité)
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 }
@@ -39,7 +34,6 @@ if (!defined('BASE_PATH')) {
             padding: 20px;
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -105,7 +99,6 @@ if (!defined('BASE_PATH')) {
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Main Content */
         .main-content {
             display: flex;
             justify-content: center;
@@ -267,7 +260,6 @@ if (!defined('BASE_PATH')) {
             line-height: 1.4;
         }
 
-        /* Footer */
         .footer {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -292,7 +284,6 @@ if (!defined('BASE_PATH')) {
             color: white;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -323,7 +314,6 @@ if (!defined('BASE_PATH')) {
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -359,7 +349,6 @@ if (!defined('BASE_PATH')) {
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <header class="header">
             <div class="logo">
                 <a href="<?= defined('BASE_PATH') ? BASE_PATH : '' ?>/" style="text-decoration: none; color: inherit;">
@@ -375,7 +364,6 @@ if (!defined('BASE_PATH')) {
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="inscription-card">
                 <div class="form-header">
@@ -409,7 +397,6 @@ if (!defined('BASE_PATH')) {
                         <input type="tel" id="telephone" name="telephone" class="form-input" placeholder="06 12 34 56 78 (optionnel)">
                     </div>
 
-                    <!-- Rôle forcé à "client" pour sécurité -->
                     <input type="hidden" name="role" value="client">
 
                     <button type="submit" class="submit-btn">
@@ -426,7 +413,6 @@ if (!defined('BASE_PATH')) {
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="footer">
             <p style="color: rgba(255,255,255,0.8);">
                 © 2025 Kayak Trip Loire. En créant un compte, vous acceptez nos 
@@ -437,7 +423,6 @@ if (!defined('BASE_PATH')) {
     </div>
 
     <script>
-        // Gestion de l'heure en temps réel
         class TimeManager {
             constructor() {
                 this.timezone = 'Europe/Paris';
@@ -466,7 +451,6 @@ if (!defined('BASE_PATH')) {
             }
         }
 
-        // Validation du formulaire
         class FormValidator {
             constructor() {
                 this.form = document.querySelector('form');
@@ -547,7 +531,6 @@ if (!defined('BASE_PATH')) {
             }
         }
 
-        // Amélioration UX
         class UXEnhancer {
             constructor() {
                 this.init();
@@ -602,13 +585,11 @@ if (!defined('BASE_PATH')) {
             }
         }
 
-        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             const timeManager = new TimeManager();
             const formValidator = new FormValidator();
             const uxEnhancer = new UXEnhancer();
             
-            // Animation d'entrée progressive
             setTimeout(() => {
                 document.querySelectorAll('.form-group, .submit-btn, .form-links').forEach((element, index) => {
                     setTimeout(() => {
@@ -621,7 +602,6 @@ if (!defined('BASE_PATH')) {
             console.log('🚀 Page d\'inscription Kayak Trip Loire initialisée');
         });
 
-        // Gestion de la visibilité de la page
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 console.log('Page visible - reprise normale');

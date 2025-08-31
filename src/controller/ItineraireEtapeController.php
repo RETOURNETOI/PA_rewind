@@ -36,8 +36,7 @@ class ItineraireEtapeController
         $st->execute([':iid'=>$id_itineraire, ':pid'=>$id_point, ':ord'=>$ordre]);
         return $st->fetch(PDO::FETCH_ASSOC) ?: null;
     }
-
-    /** Met uniquement à jour l’hébergement et/ou l’ordre */
+    
     public function update(int $id_itineraire, int $id_point, int $ordre, array $data): bool
     {
         try{

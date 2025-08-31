@@ -1,12 +1,10 @@
 <?php
-// gestion_messagerie.php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: connexion.php");
     exit;
 }
 
-// Connexion BDD
 $dsn = "mysql:host=localhost;dbname=kayak_trip;charset=utf8";
 try {
     $db = new PDO($dsn, "root", "", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
@@ -16,7 +14,6 @@ try {
 
 $message = "";
 
-// Création table si nécessaire (amélioration de la table MESSAGE existante)
 try {
     $db->exec("CREATE TABLE IF NOT EXISTS conversations (
         id_conversation INT AUTO_INCREMENT PRIMARY KEY,
@@ -45,7 +42,6 @@ try {
     $message = "Erreur création tables : " . $e->getMessage();
 }
 
-// Gestion des actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['assigner_commercial'])) {
         $stmt = $db->prepare("UPDATE conversations SET id_commercial = ?, statut = 'en_cours' WHERE id_conversation = ?");
@@ -60,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Récupération des données
 $conversations = $db->query("
     SELECT c.*, 
            client.nom as client_nom, client.prenom as client_prenom, client.email as client_email,
@@ -74,7 +69,6 @@ $conversations = $db->query("
 
 $commerciaux = $db->query("SELECT id_utilisateur, nom, prenom FROM utilisateur WHERE role = 'commercial'")->fetchAll(PDO::FETCH_ASSOC);
 
-// Statistiques
 $stats = [
     'total' => count($conversations),
     'ouvert' => count(array_filter($conversations, fn($c) => $c['statut'] === 'ouvert')),
@@ -132,7 +126,6 @@ $stats = [
             <div class="message"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
-        <!-- Statistiques -->
         <div class="stats-bar">
             <div class="stat-card">
                 <h3><?= $stats['total'] ?></h3>
@@ -156,7 +149,6 @@ $stats = [
             </div>
         </div>
 
-        <!-- Liste des conversations -->
         <div class="conversations-section">
             <h2>Conversations Clients</h2>
             
@@ -193,7 +185,6 @@ $stats = [
                         
                         <div>
                             <div class="actions-form">
-                                <!-- Assignation commercial -->
                                 <?php if (!$conv['commercial_nom']): ?>
                                     <form method="post" style="display: inline;">
                                         <input type="hidden" name="id_conversation" value="<?= $conv['id_conversation'] ?>">
@@ -209,7 +200,6 @@ $stats = [
                                     </form>
                                 <?php endif; ?>
                                 
-                                <!-- Changement de statut -->
                                 <form method="post" style="display: inline;">
                                     <input type="hidden" name="id_conversation" value="<?= $conv['id_conversation'] ?>">
                                     <select name="nouveau_statut">
@@ -229,7 +219,6 @@ $stats = [
             <?php endif; ?>
         </div>
 
-        <!-- Section configuration -->
         <div class="conversations-section" style="margin-top: 20px;">
             <h2>Configuration du Chat</h2>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -256,7 +245,6 @@ $stats = [
             </div>
         </div>
 
-        <!-- Section commerciaux -->
         <div class="conversations-section" style="margin-top: 20px;">
             <h2>Équipe Commerciale</h2>
             <?php if (empty($commerciaux)): ?>

@@ -1,22 +1,12 @@
 <?php
-// dashboard_admin.php
-
-// --- Définition du chemin de base de l'application ---
-// Adapter ce chemin à votre structure de projet et URL
-// define('BASE_PATH', '/PA_rewind/src');
-
-// --- Configuration du fuseau horaire ---
 date_default_timezone_set('Europe/Paris');
 
-// --- Vérification des droits admin ---
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    // Redirection vers la page de connexion si l'utilisateur n'est pas admin
     header("Location: " . BASE_PATH . "/connexion?erreur=acces_refuse");
     exit;
 }
 
-// --- Inclusion des fichiers nécessaires ---
 require_once __DIR__ . '/../../bdd/Connexion.php';
 require_once __DIR__ . '/../../controller/PackController.php';
 require_once __DIR__ . '/../../controller/ServiceController.php';
@@ -26,11 +16,9 @@ require_once __DIR__ . '/../../controller/PointArretController.php';
 require_once __DIR__ . '/../../controller/CommandeController.php';
 require_once __DIR__ . '/../../controller/DashboardStats.php';
 
-// --- Utilisation de la classe Connexion pour obtenir PDO ---
 $connexion = new Connexion();
 $db = $connexion->getPDO();
 
-// --- Instanciation des contrôleurs ---
 $packCtrl = new PackController();
 $serviceCtrl = new ServiceController();
 $userCtrl = new UtilisateurController();
@@ -38,7 +26,6 @@ $hebergementCtrl = new HebergementController();
 $pointCtrl = new PointArretController();
 $commandeCtrl = new CommandeController();
 
-// --- Récupération des statistiques avancées ---
 try {
     $stats = new DashboardStats($db);
     
@@ -429,7 +416,6 @@ try {
             transform: translateY(-1px);
         }
 
-        /* Style pour l'heure en temps réel */
         .live-time {
             font-weight: bold;
             color: #667eea;
@@ -468,7 +454,6 @@ try {
 </head>
 <body>
     <div class="container">
-        <!-- Barre du haut -->
         <div class="top-bar">
             <div class="admin-info">
                 👋 Bienvenue <?= isset($_SESSION['user_nom']) ? htmlspecialchars($_SESSION['user_nom']) : 'Admin' ?>
@@ -481,7 +466,6 @@ try {
             </div>
         </div>
 
-        <!-- Header -->
         <div class="header">
             <h1>🚣‍♂️ Dashboard Admin</h1>
             <p>Panneau de contrôle - Kayak Trip Management System</p>
@@ -498,7 +482,6 @@ try {
             </div>
         <?php endif; ?>
 
-        <!-- Statistiques principales -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">📦</div>
@@ -563,7 +546,6 @@ try {
             <?php endif; ?>
         </div>
 
-        <!-- Alertes et notifications importantes -->
         <div class="charts-grid" style="margin-bottom: 20px;">
             <div class="chart-card" style="border-left: 4px solid #ffd43b;">
                 <h3 class="chart-title">⚠️ Actions Requises</h3>
@@ -593,7 +575,6 @@ try {
         </div>
 
         <div class="charts-grid">
-            <!-- Répartition des utilisateurs -->
             <?php if (isset($usersByRole) && !empty($usersByRole)): ?>
             <div class="chart-card">
                 <h3 class="chart-title">👥 Répartition des Utilisateurs</h3>
@@ -613,7 +594,6 @@ try {
             </div>
             <?php endif; ?>
 
-            <!-- Statut des commandes -->
             <?php if (isset($commandeStats)): ?>
             <div class="chart-card">
                 <h3 class="chart-title">📊 Statut des Commandes</h3>
@@ -643,7 +623,6 @@ try {
             </div>
             <?php endif; ?>
 
-            <!-- Types d'hébergements -->
             <?php if (isset($hebergementsByType) && !empty($hebergementsByType)): ?>
             <div class="chart-card">
                 <h3 class="chart-title">🏠 Types d'Hébergements</h3>
@@ -664,7 +643,6 @@ try {
             <?php endif; ?>
         </div>
 
-        <!-- Section de gestion principale -->
         <div class="management-grid">
             <div class="management-card">
                 <h3>📦 Gestion des Packs</h3>
@@ -727,7 +705,6 @@ try {
             </div>
         </div>
 
-        <!-- Top hébergements -->
         <?php if (isset($topHebergements) && !empty($topHebergements)): ?>
         <div class="recent-activity">
             <h3>🏆 Top Hébergements Premium</h3>
@@ -746,7 +723,6 @@ try {
         </div>
         <?php endif; ?>
 
-        <!-- Activité récente -->
         <?php if (isset($recentUsers) && !empty($recentUsers)): ?>
         <div class="recent-activity">
             <h3>🆕 Derniers utilisateurs inscrits</h3>
@@ -771,7 +747,6 @@ try {
         </div>
         <?php endif; ?>
 
-        <!-- Progression du projet -->
         <div class="recent-activity">
             <h3>🚀 État d'avancement du projet</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
@@ -807,7 +782,6 @@ try {
             </div>
         </div>
 
-        <!-- Statistiques rapides -->
         <?php if (isset($mostExpensivePack, $mostExpensiveService)): ?>
         <div class="recent-activity" style="margin-top: 30px;">
             <h3>💎 Produits Premium</h3>
@@ -832,7 +806,6 @@ try {
         </div>
         <?php endif; ?>
 
-        <!-- Footer avec informations système -->
         <div class="recent-activity" style="margin-top: 30px;">
             <h3>ℹ️ Informations Système</h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 15px;">
@@ -859,9 +832,7 @@ try {
 
     </div>
 
-    <!-- Script pour la gestion du temps et animations -->
     <script>
-        // Configuration du fuseau horaire et mise à jour de l'heure
         class TimeManager {
             constructor() {
                 this.timezone = 'Europe/Paris';
@@ -873,7 +844,7 @@ try {
             init() {
                 this.findTimeElements();
                 this.startTimeUpdates();
-                this.updateTime(); // Mise à jour immédiate
+                this.updateTime();
             }
 
             findTimeElements() {
@@ -887,7 +858,6 @@ try {
             updateTime() {
                 const now = new Date();
                 
-                // Format pour l'en-tête (complet)
                 const fullTimeFormat = now.toLocaleString('fr-FR', {
                     weekday: 'long',
                     year: 'numeric',
@@ -899,7 +869,6 @@ try {
                     timeZone: this.timezone
                 });
 
-                // Format pour l'heure système (court)
                 const shortTimeFormat = now.toLocaleTimeString('fr-FR', {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -907,7 +876,6 @@ try {
                     timeZone: this.timezone
                 });
 
-                // Mise à jour des éléments
                 const headerTime = document.getElementById('header-time');
                 const systemTime = document.getElementById('system-time');
 
@@ -921,7 +889,6 @@ try {
                     this.animateTimeUpdate(systemTime);
                 }
 
-                // Mise à jour des autres éléments de temps
                 document.querySelectorAll('.current-time:not(#header-time):not(#system-time)').forEach(el => {
                     el.textContent = shortTimeFormat;
                     this.animateTimeUpdate(el);
@@ -952,7 +919,6 @@ try {
             }
         }
 
-        // Gestionnaire des animations des barres de progression
         class ProgressBarManager {
             constructor() {
                 this.progressBars = document.querySelectorAll('.progress-fill');
@@ -967,11 +933,9 @@ try {
                 this.progressBars.forEach((bar, index) => {
                     const targetWidth = bar.style.width;
                     
-                    // Préparation de l'animation
                     bar.style.width = '0%';
                     bar.style.transition = 'none';
                     
-                    // Animation échelonnée
                     setTimeout(() => {
                         bar.style.transition = 'width 1s cubic-bezier(0.4, 0, 0.2, 1)';
                         bar.style.width = targetWidth;
@@ -980,7 +944,6 @@ try {
             }
         }
 
-        // Gestionnaire des effets de cartes
         class CardEffectsManager {
             constructor() {
                 this.cards = document.querySelectorAll('.stat-card, .management-card, .chart-card');
@@ -1023,7 +986,6 @@ try {
             }
         }
 
-        // Gestionnaire principal du dashboard
         class DashboardManager {
             constructor() {
                 this.timeManager = null;
@@ -1051,10 +1013,8 @@ try {
             }
         }
 
-        // Initialisation automatique
         const dashboardManager = new DashboardManager();
 
-        // Gestion de la visibilité de la page pour économiser les ressources
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 console.log('Page cachée - économie d\'énergie');
@@ -1063,7 +1023,6 @@ try {
             }
         });
 
-        // Nettoyage avant fermeture
         window.addEventListener('beforeunload', () => {
             dashboardManager.destroy();
         });

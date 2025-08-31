@@ -15,7 +15,7 @@ class CommandeController
                  VALUES (:uid, :date, :statut)";
             return $this->pdo->prepare($sql)->execute([
                 ':uid'=>$data['id_utilisateur'],
-                ':date'=>$data['date_commande'] ?? null, // sinon DEFAULT CURRENT_TIMESTAMP
+                ':date'=>$data['date_commande'] ?? null,
                 ':statut'=>$data['statut'] ?? 'en_attente'
             ]);
         }catch(Exception $e){ error_log($e->getMessage()); return false; }

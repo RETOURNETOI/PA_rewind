@@ -1,12 +1,10 @@
 <?php
-// gestion_newsletter.php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: connexion.php");
     exit;
 }
 
-// Connexion BDD
 $dsn = "mysql:host=localhost;dbname=kayak_trip;charset=utf8";
 try {
     $db = new PDO($dsn, "root", "", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
@@ -16,7 +14,6 @@ try {
 
 $message = "";
 
-// Création des tables
 try {
     $db->exec("CREATE TABLE IF NOT EXISTS newsletter_abonnes (
         id_abonne INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,7 +41,6 @@ try {
     $message = "Erreur création tables : " . $e->getMessage();
 }
 
-// Gestion des actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (isset($_POST['creer_campagne'])) {
@@ -60,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         if (isset($_POST['envoyer_maintenant'])) {
-            // Simulation d'envoi - ici vous intégreriez votre service d'email
             $stmt = $db->prepare("UPDATE newsletter_campagnes SET statut = 'envoye', date_envoi = NOW() WHERE id_campagne = ?");
             $stmt->execute([$_POST['id_campagne']]);
             $message = "Newsletter envoyée ! (simulation)";
@@ -71,11 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Récupération des données
 $abonnes = $db->query("SELECT * FROM newsletter_abonnes WHERE actif = 1 ORDER BY date_inscription DESC")->fetchAll(PDO::FETCH_ASSOC);
 $campagnes = $db->query("SELECT * FROM newsletter_campagnes ORDER BY date_creation DESC")->fetchAll(PDO::FETCH_ASSOC);
 
-// Statistiques
 $stats = [
     'total_abonnes' => count($abonnes),
     'campagnes_envoyees' => count(array_filter($campagnes, fn($c) => $c['statut'] === 'envoye')),
@@ -138,7 +131,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             <div class="message"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
-        <!-- Statistiques -->
         <div class="stats-bar">
             <div class="stat-card">
                 <h3><?= $stats['total_abonnes'] ?></h3>
@@ -158,7 +150,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             </div>
         </div>
 
-        <!-- Onglets -->
         <div class="tabs">
             <div class="tab active" onclick="showTab('campagnes')">Campagnes</div>
             <div class="tab" onclick="showTab('abonnes')">Abonnés</div>
@@ -166,7 +157,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             <div class="tab" onclick="showTab('templates')">Templates</div>
         </div>
 
-        <!-- Onglet Campagnes -->
         <div class="tab-content active" id="campagnes">
             <div class="campaigns-grid">
                 <?php foreach ($campagnes as $campagne): ?>
@@ -211,7 +201,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             </div>
         </div>
 
-        <!-- Onglet Abonnés -->
         <div class="tab-content" id="abonnes">
             <div class="form-section">
                 <h3>Liste des Abonnés (<?= count($abonnes) ?>)</h3>
@@ -237,7 +226,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             </div>
         </div>
 
-        <!-- Onglet Nouvelle Campagne -->
         <div class="tab-content" id="nouvelle-campagne">
             <div class="form-section">
                 <h2>Créer une Nouvelle Campagne</h2>
@@ -271,7 +259,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             <p>Cher abonné,</p>
             <p>Découvrez nos dernières offres et actualités...</p>
             
-            <!-- Votre contenu ici -->
             
         </main>
         
@@ -289,7 +276,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             </div>
         </div>
 
-        <!-- Onglet Templates -->
         <div class="tab-content" id="templates">
             <div class="form-section">
                 <h2>Templates Prédéfinis</h2>
@@ -313,7 +299,6 @@ if ($stats['campagnes_envoyees'] > 0) {
             </div>
         </div>
 
-        <!-- Modal aperçu -->
         <div id="previewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; max-width: 80%; max-height: 80%; overflow: auto;">
                 <h3>Aperçu de la Campagne</h3>
@@ -336,7 +321,6 @@ if ($stats['campagnes_envoyees'] > 0) {
         }
 
         function previewCampagne(id) {
-            // Simulation d'aperçu - ici vous récupéreriez le contenu via AJAX
             document.getElementById('previewContent').innerHTML = '<p>Aperçu de la campagne #' + id + '</p><p><em>Fonctionnalité à implémenter via AJAX</em></p>';
             document.getElementById('previewModal').style.display = 'block';
         }
@@ -368,13 +352,11 @@ if ($stats['campagnes_envoyees'] > 0) {
             if (templates[type]) {
                 document.querySelector('input[name="titre"]').value = templates[type].titre;
                 document.querySelector('input[name="sujet"]').value = templates[type].sujet;
-                // Le contenu pourrait être plus détaillé ici
             }
         }
 
         function desabonner(id) {
             if (confirm('Désabonner cet utilisateur ?')) {
-                // Ici vous feriez un appel AJAX pour désabonner
                 alert('Fonctionnalité à implémenter via AJAX');
             }
         }

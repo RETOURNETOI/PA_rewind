@@ -1,31 +1,23 @@
 <?php 
-// confirmation_itineraire.php - Page de confirmation d'itinéraire créé
 
-// Configuration du fuseau horaire
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session
 session_start();
 
-// Définir BASE_PATH si elle n'existe pas déjà
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 }
 
-// Vérifier que l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: ' . BASE_PATH . '/connexion');
     exit;
 }
 
-// Récupérer les données de confirmation
 $resumeItineraire = $_SESSION['itineraire_success'] ?? null;
 $successMessage = $_SESSION['success_message'] ?? null;
 
-// Nettoyer la session
 unset($_SESSION['itineraire_success'], $_SESSION['success_message']);
 
-// Si pas de données de confirmation, rediriger
 if (!$resumeItineraire) {
     header('Location: ' . BASE_PATH . '/composer_itineraire');
     exit;
@@ -231,7 +223,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             padding: 20px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -258,7 +249,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
         }
 
-        /* Animations */
         @keyframes bounce {
             0%, 100% {
                 transform: translateY(0);
@@ -296,7 +286,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
 </head>
 <body>
     <div class="container">
-        <!-- Confirmation principale -->
         <div class="confirmation-card">
             <div class="success-icon">✅</div>
             <h1 class="confirmation-title">Itinéraire confirmé !</h1>
@@ -305,7 +294,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             </p>
         </div>
 
-        <!-- Détails de l'itinéraire -->
         <div class="details-section">
             <h2 style="color: #333; margin-bottom: 20px; text-align: center;">📋 Résumé de votre réservation</h2>
             
@@ -352,14 +340,12 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             </div>
         </div>
 
-        <!-- Informations importantes -->
         <div class="info-box">
             <h3>📧 Confirmation par email</h3>
             <p>Un email de confirmation a été envoyé à votre adresse email avec tous les détails de votre réservation.</p>
             <p>Vous y trouverez vos bons de réservation à présenter lors de votre arrivée dans chaque hébergement.</p>
         </div>
 
-        <!-- Prochaines étapes -->
         <div class="next-steps">
             <h3>🚀 Prochaines étapes</h3>
             <ul class="steps-list">
@@ -381,7 +367,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             </ul>
         </div>
 
-        <!-- Actions -->
         <div class="actions-section">
             <a href="<?= BASE_PATH ?>/profil" class="btn btn-primary">
                 📱 Voir mes réservations
@@ -394,7 +379,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             </a>
         </div>
 
-        <!-- Informations de contact -->
         <div class="info-box">
             <h3>📞 Besoin d'aide ?</h3>
             <p><strong>Email :</strong> contact@kayaktriploire.fr</p>
@@ -402,7 +386,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             <p><strong>En cas d'urgence :</strong> 06 XX XX XX XX (disponible 24h/24 pendant votre séjour)</p>
         </div>
 
-        <!-- Footer -->
         <footer class="footer">
             <p>© 2025 Kayak Trip Loire - Votre aventure commence maintenant !</p>
             <p>Merci de nous faire confiance pour votre séjour sur la Loire.</p>
@@ -410,9 +393,7 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
     </div>
 
     <script>
-        // Animation de célébration au chargement
         document.addEventListener('DOMContentLoaded', function() {
-            // Animation des éléments
             const elements = document.querySelectorAll('.confirmation-card, .details-section, .next-steps, .info-box');
             elements.forEach((el, index) => {
                 el.style.opacity = '0';
@@ -425,10 +406,8 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 }, index * 200);
             });
 
-            // Message de bienvenue dans la console
             console.log('🎉 Félicitations ! Votre itinéraire Kayak Trip Loire a été confirmé !');
             
-            // Auto-scroll vers les détails après l'animation
             setTimeout(() => {
                 const detailsSection = document.querySelector('.details-section');
                 if (detailsSection) {
@@ -440,7 +419,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }, 1500);
         });
 
-        // Fonction pour partager la réservation (si l'API Web Share est supportée)
         function partagerReservation() {
             if (navigator.share) {
                 navigator.share({
@@ -451,16 +429,13 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
             }
         }
 
-        // Fonction pour imprimer la confirmation
         function imprimerConfirmation() {
             window.print();
         }
 
-        // Ajouter des boutons d'action supplémentaires si nécessaire
         document.addEventListener('DOMContentLoaded', function() {
             const actionsSection = document.querySelector('.actions-section');
             
-            // Bouton partage (si supporté)
             if (navigator.share) {
                 const shareBtn = document.createElement('button');
                 shareBtn.className = 'btn btn-secondary';
@@ -469,7 +444,6 @@ $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
                 actionsSection.appendChild(shareBtn);
             }
             
-            // Bouton impression
             const printBtn = document.createElement('button');
             printBtn.className = 'btn btn-secondary';
             printBtn.innerHTML = '🖨️ Imprimer';

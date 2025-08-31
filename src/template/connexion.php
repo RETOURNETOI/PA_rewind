@@ -1,18 +1,12 @@
 <?php 
-// connexion.php - Page de connexion avec style moderne
-
-// Configuration du fuseau horaire
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session
 session_start();
 
-// Définir BASE_PATH si elle n'existe pas déjà (pour compatibilité)
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 }
 
-// Récupérer les messages d'erreur
 $errorMessage = null;
 if (isset($_GET['erreur'])) {
     $erreur = $_GET['erreur'];
@@ -28,7 +22,6 @@ if (isset($_GET['erreur'])) {
     }
 }
 
-// Récupérer le message de succès de déconnexion s'il existe
 $successMessage = $_SESSION['logout_message'] ?? null;
 unset($_SESSION['logout_message']);
 ?>
@@ -59,7 +52,6 @@ unset($_SESSION['logout_message']);
             padding: 20px;
         }
 
-        /* Messages système */
         .message-container {
             margin-bottom: 20px;
             display: flex;
@@ -90,7 +82,6 @@ unset($_SESSION['logout_message']);
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -156,7 +147,6 @@ unset($_SESSION['logout_message']);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Main Content */
         .main-content {
             display: flex;
             justify-content: center;
@@ -296,7 +286,6 @@ unset($_SESSION['logout_message']);
             color: #e74c3c;
         }
 
-        /* Footer */
         .footer {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -321,7 +310,6 @@ unset($_SESSION['logout_message']);
             color: white;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -352,7 +340,6 @@ unset($_SESSION['logout_message']);
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -395,7 +382,6 @@ unset($_SESSION['logout_message']);
 </head>
 <body>
     <div class="container">
-        <!-- Messages système -->
         <?php if ($errorMessage || $successMessage): ?>
         <div class="message-container">
             <?php if ($errorMessage): ?>
@@ -412,7 +398,6 @@ unset($_SESSION['logout_message']);
         </div>
         <?php endif; ?>
 
-        <!-- Header -->
         <header class="header">
             <div class="logo">
                 <a href="<?= defined('BASE_PATH') ? BASE_PATH : '' ?>/" style="text-decoration: none; color: inherit;">
@@ -428,7 +413,6 @@ unset($_SESSION['logout_message']);
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="connexion-card">
                 <div class="form-header">
@@ -465,7 +449,6 @@ unset($_SESSION['logout_message']);
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="footer">
             <p style="color: rgba(255,255,255,0.8);">
                 © 2025 Kayak Trip Loire. En vous connectant, vous acceptez nos 
@@ -476,7 +459,6 @@ unset($_SESSION['logout_message']);
     </div>
 
     <script>
-        // Gestion de l'heure en temps réel
         class TimeManager {
             constructor() {
                 this.timezone = 'Europe/Paris';
@@ -506,7 +488,6 @@ unset($_SESSION['logout_message']);
         }
 <<<<<<< HEAD
 
-        // Validation du formulaire
         class FormValidator {
             constructor() {
                 this.form = document.querySelector('form');
@@ -577,7 +558,6 @@ unset($_SESSION['logout_message']);
             }
         }
 
-        // Amélioration UX
         class UXEnhancer {
             constructor() {
                 this.init();
@@ -615,13 +595,11 @@ unset($_SESSION['logout_message']);
             }
         }
 
-        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             const timeManager = new TimeManager();
             const formValidator = new FormValidator();
             const uxEnhancer = new UXEnhancer();
             
-            // Animation d'entrée progressive
             setTimeout(() => {
                 document.querySelectorAll('.form-group, .submit-btn, .form-links').forEach((element, index) => {
                     setTimeout(() => {
@@ -634,7 +612,6 @@ unset($_SESSION['logout_message']);
             console.log('🔐 Page de connexion Kayak Trip Loire initialisée');
         });
 
-        // Gestion de la visibilité de la page
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 console.log('Page visible - reprise normale');

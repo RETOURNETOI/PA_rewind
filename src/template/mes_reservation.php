@@ -20,7 +20,6 @@ if (isset($_SESSION['flash'])) {
 
 $controller = new HebergementController();
 $reservations = $controller->getReservationsByUser($_SESSION['user_id']);
-// var_dump($reservations);
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +31,7 @@ $reservations = $controller->getReservationsByUser($_SESSION['user_id']);
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #e6f0fa; /* bleu clair */
+            background: #e6f0fa;
             color: #333;
             margin: 0;
             padding: 0;
@@ -49,12 +48,12 @@ $reservations = $controller->getReservationsByUser($_SESSION['user_id']);
 
         h1 {
             text-align: center;
-            color: #1a73e8; /* bleu plus vif */
+            color: #1a73e8;
             margin-bottom: 20px;
         }
 
         .flash {
-            background: #d0e7ff; /* bleu pâle */
+            background: #d0e7ff;
             color: #0b3d91;
             padding: 12px 20px;
             border-left: 5px solid #1a73e8;
@@ -83,7 +82,7 @@ $reservations = $controller->getReservationsByUser($_SESSION['user_id']);
         }
 
         tr:nth-child(even) {
-            background-color: #f2f6fc; /* bleu très clair */
+            background-color: #f2f6fc;
         }
 
         tr:hover {

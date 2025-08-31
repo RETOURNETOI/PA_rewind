@@ -1,12 +1,10 @@
 <?php
-// graphique_occupation.php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: connexion.php");
     exit;
 }
 
-// Connexion BDD
 $dsn = "mysql:host=localhost;dbname=kayak_trip;charset=utf8";
 try {
     $db = new PDO($dsn, "root", "", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
@@ -14,10 +12,8 @@ try {
     die("Erreur connexion : " . $e->getMessage());
 }
 
-// Récupération des données d'occupation
-$periode = $_GET['periode'] ?? 'mois'; // mois, trimestre, annee
+$periode = $_GET['periode'] ?? 'mois';
 
-// Calcul du taux d'occupation par hébergement
 $sql = "SELECT 
     h.id_hebergement,
     h.nom,
@@ -35,20 +31,17 @@ ORDER BY nuits_reservees DESC";
 
 $hebergements = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
-// Données pour les graphiques
 $labels = [];
 $taux_occupation = [];
 $reservations_data = [];
 
 foreach ($hebergements as $heb) {
     $labels[] = $heb['nom'];
-    // Calcul approximatif du taux d'occupation (sur 6 mois = 180 jours)
     $taux = $heb['capacite'] > 0 ? min(100, ($heb['nuits_reservees'] / (180 * $heb['capacite'])) * 100) : 0;
     $taux_occupation[] = round($taux, 1);
     $reservations_data[] = $heb['total_reservations'];
 }
 
-// Statistiques globales
 $total_hebergements = count($hebergements);
 $taux_moyen = $total_hebergements > 0 ? array_sum($taux_occupation) / $total_hebergements : 0;
 $total_reservations = array_sum($reservations_data);
@@ -90,7 +83,6 @@ $total_reservations = array_sum($reservations_data);
             <a href="gestion_hebergements.php" class="btn">Gérer Hébergements</a>
         </div>
 
-        <!-- Filtres -->
         <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
             <h3>Période d'analyse</h3>
             <a href="?periode=mois" class="btn <?= $periode == 'mois' ? 'btn-active' : '' ?>">Dernier mois</a>
@@ -98,7 +90,6 @@ $total_reservations = array_sum($reservations_data);
             <a href="?periode=annee" class="btn <?= $periode == 'annee' ? 'btn-active' : '' ?>">Dernière année</a>
         </div>
 
-        <!-- Statistiques -->
         <div class="stats-bar">
             <div class="stat-card">
                 <h3><?= $total_hebergements ?></h3>
@@ -118,7 +109,6 @@ $total_reservations = array_sum($reservations_data);
             </div>
         </div>
 
-        <!-- Graphiques -->
         <div class="charts-grid">
             <div class="chart-section">
                 <h3>Taux d'Occupation par Hébergement</h3>
@@ -130,13 +120,11 @@ $total_reservations = array_sum($reservations_data);
             </div>
         </div>
 
-        <!-- Graphique de tendance -->
         <div class="chart-section">
             <h3>Répartition des Performances</h3>
             <canvas id="performanceChart" width="800" height="400"></canvas>
         </div>
 
-        <!-- Tableau détaillé -->
         <div class="chart-section">
             <h3>Détail par Hébergement</h3>
             <div class="table-responsive">
@@ -186,7 +174,6 @@ $total_reservations = array_sum($reservations_data);
             </div>
         </div>
 
-        <!-- Recommandations -->
         <div class="chart-section">
             <h3>🎯 Recommandations</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -217,12 +204,10 @@ $total_reservations = array_sum($reservations_data);
     </div>
 
     <script>
-        // Données PHP vers JavaScript
         const labels = <?= json_encode(array_slice($labels, 0, 10)) ?>;
         const tauxOccupation = <?= json_encode(array_slice($taux_occupation, 0, 10)) ?>;
         const reservationsData = <?= json_encode(array_slice($reservations_data, 0, 10)) ?>;
 
-        // Graphique taux d'occupation
         const ctx1 = document.getElementById('occupationChart').getContext('2d');
         new Chart(ctx1, {
             type: 'bar',
@@ -266,7 +251,6 @@ $total_reservations = array_sum($reservations_data);
             }
         });
 
-        // Graphique réservations
         const ctx2 = document.getElementById('reservationsChart').getContext('2d');
         new Chart(ctx2, {
             type: 'doughnut',
@@ -290,7 +274,6 @@ $total_reservations = array_sum($reservations_data);
             }
         });
 
-        // Graphique de performance globale
         const ctx3 = document.getElementById('performanceChart').getContext('2d');
         const performanceCategories = ['Excellent (>80%)', 'Bon (60-80%)', 'Moyen (40-60%)', 'Faible (<40%)'];
         const performanceCounts = [

@@ -6,14 +6,12 @@ class Itineraire
     private int $id_utilisateur;
     private string $nom;
 
-    // ======= CONSTRUCTEUR =======
     public function __construct(int $id_utilisateur = 0, string $nom = '')
     {
         $this->id_utilisateur = $id_utilisateur;
         $this->nom = $nom;
     }
 
-    // ======= GETTERS & SETTERS =======
     public function getIdItineraire(): int { return $this->id_itineraire; }
     public function setIdItineraire(int $id): void { $this->id_itineraire = $id; }
 

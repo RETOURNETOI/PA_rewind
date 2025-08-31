@@ -4,23 +4,18 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// --- Chemin de base ---
 define('BASE_PATH', '/PA_rewind/public');
 
-// --- Récupère l'URI demandée ---
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 
-// Retire le préfixe BASE_PATH
 if (strpos($uri, BASE_PATH) === 0) {
     $uri = substr($uri, strlen(BASE_PATH));
 }
 
-// Normalisation : vide ou index.php → racine
 if ($uri === '' || $uri === '/index.php') {
     $uri = '/';
 }
 
-// --- Gestion des assets statiques (CSS, JS, images) ---
 if (preg_match('/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/', $uri)) {
     $filePath = __DIR__ . $uri;
 
@@ -63,18 +58,6 @@ if (preg_match('/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/', 
         exit('Asset non trouvé');
     }
 }
-
-// --- Table de redirections ---
-/*$redirects = [
-    '/ancienne-page' => '/nouvelle-page',
-    '/dashboard_admin' => '/dashboardadmin',
-];
-if (isset($redirects[$uri])) {
-    header("Location: " . BASE_PATH . $redirects[$uri], true, 301);
-    exit;
-}
-*/
-// --- Router ---
 switch ($uri) {
     case '/':
         require __DIR__ . '/../src/template/home.php';
@@ -168,7 +151,6 @@ switch ($uri) {
         require __DIR__ . '/../src/template/composer_itineraire.php';
         break;
 
-    // Pages client
     case '/packs':
         require __DIR__ . '/../src/template/client/packs.php';
         break;

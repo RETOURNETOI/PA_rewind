@@ -1,5 +1,4 @@
 <?php
-// gestion_hebergements.php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: " . BASE_PATH . "/connexion");
@@ -15,7 +14,6 @@ $pointCtrl = new PointArretController();
 $message = "";
 $point_id = $_GET['point_id'] ?? null;
 
-// Gestion des actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ajouter'])) {
         $success = $hebergementCtrl->ajouter($_POST);
@@ -24,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $success = $hebergementCtrl->update($_POST['id'], $_POST);
         $message = $success ? "✅ Hébergement modifié." : "❌ Erreur lors de la modification.";
     } elseif (isset($_POST['planifier_fermeture'])) {
-        // Ici on pourrait ajouter une table "fermetures_hebergement" 
         $message = "🔧 Fermeture planifiée (fonctionnalité à développer)";
     }
 }
@@ -35,12 +32,10 @@ if (isset($_GET['supprimer'])) {
     $message = $success ? "✅ Hébergement supprimé." : "❌ Erreur lors de la suppression.";
 }
 
-// Récupération des données
 $points = $pointCtrl->getAll();
 $hebergements = $point_id ? $hebergementCtrl->getByPoint($point_id) : $hebergementCtrl->getAll();
 $selectedPoint = $point_id ? $pointCtrl->getById($point_id) : null;
 
-// Statistiques
 $totalHebergements = count($hebergements);
 $typesStats = [];
 foreach ($hebergements as $heb) {
@@ -103,7 +98,6 @@ foreach ($hebergements as $heb) {
             </div>
         <?php endif; ?>
 
-        <!-- Statistiques -->
         <div class="stats-bar">
             <div class="stat-card">
                 <h3><?= $totalHebergements ?></h3>
@@ -117,7 +111,6 @@ foreach ($hebergements as $heb) {
             <?php endforeach; ?>
         </div>
 
-        <!-- Onglets -->
         <div class="tabs">
             <div class="tab active" onclick="showTab('liste')">📋 Liste Hébergements</div>
             <div class="tab" onclick="showTab('ajouter')">➕ Ajouter</div>
@@ -125,7 +118,6 @@ foreach ($hebergements as $heb) {
             <div class="tab" onclick="showTab('statistiques')">📊 Statistiques</div>
         </div>
 
-        <!-- Onglet Liste -->
         <div class="tab-content active" id="liste">
             <div class="hebergements-grid">
                 <?php foreach ($hebergements as $heb): ?>
@@ -173,7 +165,6 @@ foreach ($hebergements as $heb) {
             </div>
         </div>
 
-        <!-- Onglet Ajouter -->
         <div class="tab-content" id="ajouter">
             <div class="form-section">
                 <h2>➕ Nouvel Hébergement</h2>
@@ -223,7 +214,6 @@ foreach ($hebergements as $heb) {
             </div>
         </div>
 
-        <!-- Onglet Fermetures -->
         <div class="tab-content" id="fermetures">
             <div class="form-section">
                 <h2>🔧 Planifier des Fermetures</h2>
@@ -270,7 +260,6 @@ foreach ($hebergements as $heb) {
             </div>
         </div>
 
-        <!-- Onglet Statistiques -->
         <div class="tab-content" id="statistiques">
             <div class="form-section">
                 <h2>📊 Statistiques Hébergements</h2>
@@ -302,23 +291,18 @@ foreach ($hebergements as $heb) {
 
     <script>
         function showTab(tabName) {
-            // Masquer tous les contenus
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => content.classList.remove('active'));
             
-            // Désactiver tous les onglets
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => tab.classList.remove('active'));
             
-            // Activer l'onglet et contenu sélectionné
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
         }
 
         function planifierFermeture(id) {
-            // Basculer vers l'onglet fermetures
             showTab('fermetures');
-            // Pré-sélectionner l'hébergement
             const select = document.querySelector('select[name="id_hebergement"]');
             if (select) {
                 select.value = id;

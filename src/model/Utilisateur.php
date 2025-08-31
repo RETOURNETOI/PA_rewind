@@ -11,7 +11,6 @@ class Utilisateur
     private string $date_inscription;
     private string $role;
 
-    // ======= CONSTRUCTEUR =======
     public function __construct(
         ?string $nom = null,
         ?string $prenom = null,
@@ -23,13 +22,12 @@ class Utilisateur
         if ($nom) $this->nom = $nom;
         if ($prenom) $this->prenom = $prenom;
         if ($email) $this->email = $email;
-        if ($mot_de_passe) $this->setMotDePasse($mot_de_passe); // hachage
+        if ($mot_de_passe) $this->setMotDePasse($mot_de_passe);
         $this->telephone = $telephone;
         $this->role = $role;
-        $this->date_inscription = date('Y-m-d H:i:s'); // date actuelle par défaut
+        $this->date_inscription = date('Y-m-d H:i:s');
     }
 
-    // ======= GETTERS & SETTERS =======
     public function getIdUtilisateur(): int { return $this->id_utilisateur; }
     public function setIdUtilisateur(int $id): void { $this->id_utilisateur = $id; }
 

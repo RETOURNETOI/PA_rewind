@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../bdd/Connexion.php';
-// require_once '../bdd/Connexion.php';
 require_once __DIR__ .'/../model/Utilisateur.php';
 
 class UtilisateurController
@@ -131,37 +130,31 @@ class UtilisateurController
         }
     }
 
+    public function verifierConnexion(string $email, string $mot_de_passe): ?Utilisateur
+    {
+        try {
+            $sql = "SELECT * FROM utilisateur WHERE email = :email";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':email' => $email]);
+            $userData = $stmt->fetch();
 
-    // controller/UtilisateurController.php
-public function verifierConnexion(string $email, string $mot_de_passe): ?Utilisateur
-{
-    try {
-        $sql = "SELECT * FROM utilisateur WHERE email = :email";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':email' => $email]);
-        $userData = $stmt->fetch();
-
-        if ($userData && password_verify($mot_de_passe, $userData['mot_de_passe'])) {
-            $utilisateur = new Utilisateur(
-                $userData['nom'],
-                $userData['prenom'],
-                $userData['email'],
-                $userData['mot_de_passe'],
-                $userData['telephone'],
-                $userData['role']
-            );
-            $utilisateur->setIdUtilisateur($userData['id_utilisateur']);
-            $utilisateur->setDateInscription($userData['date_inscription']);
-            return $utilisateur;
+            if ($userData && password_verify($mot_de_passe, $userData['mot_de_passe'])) {
+                $utilisateur = new Utilisateur(
+                    $userData['nom'],
+                    $userData['prenom'],
+                    $userData['email'],
+                    $userData['mot_de_passe'],
+                    $userData['telephone'],
+                    $userData['role']
+                );
+                $utilisateur->setIdUtilisateur($userData['id_utilisateur']);
+                $utilisateur->setDateInscription($userData['date_inscription']);
+                return $utilisateur;
+            }
+            return null;
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return null;
         }
-        return null;
-    } catch (Exception $e) {
-        error_log($e->getMessage());
-        return null;
     }
-}
-// public function verifierEmail(string $email, string $mot_de_passe): ?string
-// {
-
-// }
 }

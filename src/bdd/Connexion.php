@@ -8,7 +8,6 @@ class Connexion
     private string $pass;
     private ?PDO $pdo = null;
 
-    // ======= Constructeur =======
     public function __construct(
         string $host = "localhost",
         string $dbname = "Kayak_Trip",
@@ -21,7 +20,6 @@ class Connexion
         $this->pass = $pass;
     }
 
-    // ======= Méthode pour obtenir la connexion PDO =======
     public function getPDO(): PDO
     {
         if ($this->pdo === null) {

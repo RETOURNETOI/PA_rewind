@@ -1,29 +1,21 @@
 <?php 
-// services.php - Page des services complémentaires
-
-// Configuration du fuseau horaire
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session
 session_start();
 
-// Définir BASE_PATH si elle n'existe pas déjà
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
 }
 
-// Vérifier que l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: ' . BASE_PATH . '/connexion');
     exit;
 }
 
-// Inclure les contrôleurs nécessaires
 require_once __DIR__ . '/../controller/ServiceController.php';
 require_once __DIR__ . '/../controller/PackController.php';
 require_once __DIR__ . '/../controller/PanierController.php';
 
-// Récupérer les données
 $serviceController = new ServiceController();
 $packController = new PackController();
 $panierController = new PanierController();
@@ -31,13 +23,10 @@ $panierController = new PanierController();
 $services = $serviceController->getAll();
 $packs = $packController->getAll();
 
-// Récupérer le panier de l'utilisateur
 $panierItems = $panierController->getPanierByUserId($_SESSION['user_id']);
 
-// Variables pour l'affichage
 $userName = $_SESSION['user_prenom'] ?? $_SESSION['user_nom'] ?? 'Utilisateur';
 
-// Messages de succès/erreur
 $successMessage = $_SESSION['success_message'] ?? null;
 $errorMessage = $_SESSION['error_message'] ?? null;
 unset($_SESSION['success_message'], $_SESSION['error_message']);
@@ -56,7 +45,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             box-sizing: border-box;
         }
 
-        /* Variables CSS pour le thème */
         :root {
             --bg-gradient-start: #667eea;
             --bg-gradient-end: #764ba2;
@@ -96,7 +84,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             overflow-x: hidden;
         }
 
-        /* Toggle bouton mode sombre */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -126,7 +113,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             padding: 20px;
         }
 
-        /* Messages système */
         .message-container {
             margin-bottom: 20px;
         }
@@ -153,7 +139,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -233,7 +218,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Page Header */
         .page-header {
             text-align: center;
             margin-bottom: 40px;
@@ -265,7 +249,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             font-size: 1.1em;
         }
 
-        /* Main Content */
         .main-content {
             display: grid;
             grid-template-columns: 1fr 350px;
@@ -303,7 +286,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             gap: 10px;
         }
 
-        /* Services Grid */
         .services-grid {
             display: grid;
             gap: 20px;
@@ -407,7 +389,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             color: var(--text-primary);
         }
 
-        /* Packs Section */
         .packs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -466,7 +447,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             margin-bottom: 15px;
         }
 
-        /* Panier Sidebar */
         .panier-header {
             display: flex;
             justify-content: space-between;
@@ -548,7 +528,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             padding: 20px;
         }
 
-        /* Footer */
         .footer {
             background: var(--footer-bg);
             backdrop-filter: blur(10px);
@@ -560,7 +539,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             border: 1px solid var(--card-border);
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -595,7 +573,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -626,7 +603,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             animation-delay: 0.2s;
         }
 
-        /* Transitions fluides */
         * {
             transition: background-color 0.3s ease, 
                        color 0.3s ease, 
@@ -636,11 +612,9 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
     </style>
 </head>
 <body>
-    <!-- Bouton toggle mode sombre -->
     <button class="theme-toggle" id="themeToggle">🌙</button>
 
     <div class="container">
-        <!-- Messages système -->
         <?php if ($successMessage || $errorMessage): ?>
         <div class="message-container">
             <?php if ($successMessage): ?>
@@ -657,7 +631,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         </div>
         <?php endif; ?>
 
-        <!-- Header -->
         <header class="header">
             <div class="logo">
                 <a href="<?= BASE_PATH ?>/" style="text-decoration: none; color: inherit;">
@@ -673,16 +646,13 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             </div>
         </header>
 
-        <!-- Page Header -->
         <div class="page-header">
             <h1>🎒 Services Complémentaires</h1>
             <p>Enrichissez votre aventure avec nos services additionnels et découvrez nos packs tout inclus</p>
         </div>
 
         <div class="main-content">
-            <!-- Panel principal -->
             <div class="content-panel">
-                <!-- Services Complémentaires -->
                 <section>
                     <h2 class="section-title">⚙️ Services Additionnels</h2>
                     <div class="services-grid">
@@ -716,7 +686,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
                     </div>
                 </section>
 
-                <!-- Packs Préconstruits -->
                 <section>
                     <h2 class="section-title">📦 Packs Tout Inclus</h2>
                     <div class="packs-grid">
@@ -744,7 +713,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
                 </section>
             </div>
 
-            <!-- Sidebar - Panier -->
             <div class="sidebar">
                 <div class="panier-header">
                     <h3>🛒 Mon Panier</h3>
@@ -789,14 +757,12 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             </div>
         </div>
 
-        <!-- Footer -->
         <footer class="footer">
             <p>© 2025 Kayak Trip Loire. Enrichissez votre aventure avec nos services personnalisés.</p>
         </footer>
     </div>
 
     <script>
-        // Gestionnaire de thème
         function initTheme() {
             const themeToggle = document.getElementById('themeToggle');
             
@@ -820,7 +786,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
                 }
             });
 
-            // Charger le thème sauvegardé
             try {
                 const savedTheme = localStorage.getItem('theme');
                 if (savedTheme === 'dark') {
@@ -832,7 +797,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             }
         }
 
-        // Gestion de l'heure en temps réel
         class TimeManager {
             constructor() {
                 this.timezone = 'Europe/Paris';
@@ -861,7 +825,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             }
         }
 
-        // Gestionnaire de panier
         class PanierManager {
             constructor() {
                 this.init();
@@ -1043,7 +1006,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             }
         }
 
-        // Fonctions globales pour les boutons
         const panierManager = new PanierManager();
 
         function changeQuantity(type, itemId, delta) {
@@ -1083,7 +1045,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             window.location.href = '<?= BASE_PATH ?>/checkout';
         }
 
-        // Gestion automatique des messages (disparition après 5 secondes)
         function autoHideMessages() {
             const messages = document.querySelectorAll('.message');
             messages.forEach((message, index) => {
@@ -1097,13 +1058,11 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             });
         }
 
-        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             const timeManager = new TimeManager();
             initTheme();
             autoHideMessages();
 
-            // Animation d'entrée progressive
             setTimeout(() => {
                 document.querySelectorAll('.service-card, .pack-card').forEach((card, index) => {
                     setTimeout(() => {
@@ -1116,7 +1075,6 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             console.log('🎒 Services Complémentaires Kayak Trip Loire initialisés');
         });
 
-        // Gestion de la visibilité de la page
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 console.log('Page visible - reprise normale');

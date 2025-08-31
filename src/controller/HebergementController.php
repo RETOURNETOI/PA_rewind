@@ -13,7 +13,6 @@ class HebergementController
     public function ajouter(array $data): bool
     {
         try {
-            // Vérifiez que les champs requis (y compris id_point) sont présents
             foreach (['id_point', 'nom', 'type', 'capacite', 'prix_nuit'] as $k) {
                 if (!isset($data[$k])) {
                     throw new Exception("Champ requis: $k");
@@ -40,7 +39,6 @@ class HebergementController
     public function getDefaultIdPoint(): ?int
 {
     try {
-        // Exemple : Récupérer le premier id_point disponible dans la table POINT
         $sql = "SELECT id_point FROM POINT LIMIT 1";
         $st = $this->pdo->query($sql);
         $result = $st->fetch(PDO::FETCH_ASSOC);
@@ -94,9 +92,6 @@ class HebergementController
                         ->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /** Vérification simple : capacité + chevauchement d’intervalle pour le même hébergement
-     *  Note: le schéma ne stocke pas le stock de chambres, on considère 1 réservation à la fois.
-     */
     public function estDisponible(int $id_hebergement, string $date_debut, string $date_fin, int $nb_personnes): bool
     {
         try{
@@ -114,9 +109,6 @@ class HebergementController
         }catch(Exception $e){ error_log($e->getMessage()); return false; }
     }
 
-
-    // int $id_hebergement, int $id_utilisateur, string $date_debut, string $date_fin, int $nb_personnes
-    // $id_hebergement, $date_debut, $date_fin, $nb_personnes
     public function reserver(
         int $id_hebergement,
         int $id_utilisateur,
@@ -125,7 +117,6 @@ class HebergementController
         int $nb_personnes
     ) : bool {
         try {
-            // Vérifie la disponibilité
             if (!$this->estDisponible($id_hebergement, $date_debut, $date_fin, $nb_personnes)) {
                 return false;
             }
@@ -150,10 +141,6 @@ class HebergementController
         }
     }
     
-
-
-
-    // Dans HebergementController.php
     public function getReservationsByUser(int $id_utilisateur): array
     {
         try {
@@ -171,7 +158,6 @@ class HebergementController
         }
     }
 
-    // Dans HebergementController.php
     public function annulerReservation(int $id_commande, int $id_utilisateur): bool
     {
         try {
@@ -186,8 +172,4 @@ class HebergementController
             return false;
         }
     }
-    
-
-
-
 }

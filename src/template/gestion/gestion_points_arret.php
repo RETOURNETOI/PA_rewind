@@ -1,5 +1,4 @@
 <?php
-// gestion_points_arret.php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: connexion.php");
@@ -11,7 +10,6 @@ $controller = new PointArretController();
 
 $message = "";
 
-// Gestion des actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ajouter'])) {
         $success = $controller->ajouter($_POST);
@@ -69,7 +67,6 @@ $points = $controller->getAll();
             </div>
         <?php endif; ?>
 
-        <!-- Formulaire d'ajout -->
         <div class="form-section">
             <h2>➕ Ajouter un Point d'Arrêt</h2>
             <form method="post">
@@ -98,7 +95,6 @@ $points = $controller->getAll();
             </form>
         </div>
 
-        <!-- Liste des points -->
         <div class="form-section">
             <h2>📍 Points d'Arrêt Existants (<?= count($points) ?>)</h2>
             <div class="points-grid">

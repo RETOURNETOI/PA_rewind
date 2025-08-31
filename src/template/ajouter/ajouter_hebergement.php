@@ -13,10 +13,8 @@ if (!defined('BASE_PATH')) {
 
 require_once __DIR__.'/../controller/HebergementController.php';
 
-// Si formulaire soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new HebergementController();
-    // Récupérer automatiquement un id_point valide
     $id_point = $controller->getDefaultIdPoint();
     if ($id_point === null) {
         $message = "❌ Aucun point valide disponible.";

@@ -1,5 +1,4 @@
 <?php
-// annuler_reservation.php
 session_start();
 
 if (!defined('BASE_PATH')) {
@@ -14,7 +13,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// On récupère l'ID de la réservation depuis POST
 $id_commande = $_POST['id_commande'] ?? null;
 
 if (empty($id_commande)) {
@@ -25,7 +23,6 @@ if (empty($id_commande)) {
 
 $controller = new HebergementController();
 
-// Annulation sécurisée : on passe l'id utilisateur
 $resultat = $controller->annulerReservation((int)$id_commande, $_SESSION['user_id']);
 
 if ($resultat) {
@@ -34,6 +31,5 @@ if ($resultat) {
     $_SESSION['flash'] = "Erreur lors de l'annulation de la réservation.";
 }
 
-// Redirection vers la page des réservations
 header("Location: ". BASE_PATH . "/mes_reservation");
 exit;

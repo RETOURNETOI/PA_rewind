@@ -1,12 +1,10 @@
 <?php
-// gestion_promotions.php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: connexion.php");
     exit;
 }
 
-// Connexion BDD
 $dsn = "mysql:host=localhost;dbname=kayak_trip;charset=utf8";
 try {
     $db = new PDO($dsn, "root", "", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
@@ -16,7 +14,6 @@ try {
 
 $message = "";
 
-// Création des tables si elles n'existent pas
 try {
     $db->exec("CREATE TABLE IF NOT EXISTS codes_promo (
         id_code INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,7 +44,6 @@ try {
     $message = "Erreur création tables : " . $e->getMessage();
 }
 
-// Gestion des actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (isset($_POST['ajouter_code'])) {
@@ -92,11 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Récupération des données
 $codes_promo = $db->query("SELECT * FROM codes_promo ORDER BY date_creation DESC")->fetchAll(PDO::FETCH_ASSOC);
 $plages_tarifaires = $db->query("SELECT * FROM plages_tarifaires ORDER BY date_debut DESC")->fetchAll(PDO::FETCH_ASSOC);
 
-// Statistiques
 $codes_actifs = count(array_filter($codes_promo, fn($c) => $c['actif']));
 $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c['date_fin'] < date('Y-m-d')));
 ?>
@@ -149,7 +143,6 @@ $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c
             <div class="message"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
-        <!-- Statistiques -->
         <div class="stats-bar">
             <div class="stat-card">
                 <h3><?= count($codes_promo) ?></h3>
@@ -169,7 +162,6 @@ $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c
             </div>
         </div>
 
-        <!-- Onglets -->
         <div class="tabs">
             <div class="tab active" onclick="showTab('codes')">Codes Promo</div>
             <div class="tab" onclick="showTab('plages')">Plages Tarifaires</div>
@@ -177,7 +169,6 @@ $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c
             <div class="tab" onclick="showTab('nouvelle-plage')">+ Nouvelle Plage</div>
         </div>
 
-        <!-- Onglet Codes Promo -->
         <div class="tab-content active" id="codes">
             <div class="codes-grid">
                 <?php foreach ($codes_promo as $code): ?>
@@ -218,7 +209,6 @@ $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c
             </div>
         </div>
 
-        <!-- Onglet Plages Tarifaires -->
         <div class="tab-content" id="plages">
             <div class="codes-grid">
                 <?php foreach ($plages_tarifaires as $plage): ?>
@@ -246,7 +236,6 @@ $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c
             </div>
         </div>
 
-        <!-- Onglet Nouveau Code -->
         <div class="tab-content" id="nouveau-code">
             <div class="form-section">
                 <h2>Créer un Code Promo</h2>
@@ -299,7 +288,6 @@ $codes_expires = count(array_filter($codes_promo, fn($c) => $c['date_fin'] && $c
             </div>
         </div>
 
-        <!-- Onglet Nouvelle Plage -->
         <div class="tab-content" id="nouvelle-plage">
             <div class="form-section">
                 <h2>Créer une Plage Tarifaire</h2>

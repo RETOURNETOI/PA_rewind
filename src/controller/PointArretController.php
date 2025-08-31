@@ -11,9 +11,6 @@ class PointArretController
         $this->pdo = (new Connexion())->getPDO();
     }
 
-    /**
-     * Valide les données pour un point d'arrêt.
-     */
     private function validerDonnees(array $data): bool
     {
         if (empty($data['nom'])) {
@@ -22,9 +19,6 @@ class PointArretController
         return true;
     }
 
-    /**
-     * Ajoute un point d'arrêt en base de données.
-     */
     public function ajouter(array $data): bool
     {
         try {
@@ -55,9 +49,6 @@ class PointArretController
         }
     }
 
-    /**
-     * Récupère tous les points d'arrêt.
-     */
     public function getAll(): array
     {
         try {
@@ -70,9 +61,6 @@ class PointArretController
         }
     }
 
-    /**
-     * Récupère un point d'arrêt par son ID.
-     */
     public function getById(int $id): ?array
     {
         try {
@@ -87,9 +75,6 @@ class PointArretController
         }
     }
 
-    /**
-     * Récupère un point d'arrêt par son nom.
-     */
     public function getByNom(string $nom): ?array
     {
         try {
@@ -104,9 +89,6 @@ class PointArretController
         }
     }
 
-    /**
-     * Met à jour un point d'arrêt.
-     */
     public function update(int $id, array $data): bool
     {
         try {
@@ -146,9 +128,6 @@ class PointArretController
         }
     }
 
-    /**
-     * Supprime un point d'arrêt.
-     */
     public function delete(int $id): bool
     {
         try {

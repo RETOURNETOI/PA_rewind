@@ -1,19 +1,7 @@
 <?php
-/**
- * PanierModel.php
- * Modèle pour la gestion des données du panier
- */
 
 class PanierModel {
-    private $pdo;
-
-    public function __construct($pdo) {
-        $this->pdo = $pdo;
-    }
-
-    /**
-     * Récupérer tous les éléments du panier d'un utilisateur avec détails
-     */
+    
     public function getPanierByUserId($userId) {
         try {
             $sql = "
@@ -59,9 +47,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Vérifier si un élément existe déjà dans le panier
-     */
     public function getPanierItem($userId, $type, $itemId) {
         try {
             $sql = "SELECT * FROM panier WHERE id_utilisateur = ? AND type = ? AND item_id = ?";
@@ -73,17 +58,7 @@ class PanierModel {
             throw $e;
         }
     }
-}
-?>OC);
-        } catch (Exception $e) {
-            error_log("Erreur getPanierItem: " . $e->getMessage());
-            throw $e;
-        }
-    }
 
-    /**
-     * Ajouter un nouvel élément au panier
-     */
     public function ajouterItem($userId, $type, $itemId, $quantite) {
         try {
             $sql = "INSERT INTO panier (id_utilisateur, type, item_id, quantite, date_ajout) VALUES (?, ?, ?, ?, NOW())";
@@ -95,9 +70,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Mettre à jour la quantité d'un élément du panier
-     */
     public function updateQuantite($panierId, $quantite) {
         try {
             $sql = "UPDATE panier SET quantite = ?, date_ajout = NOW() WHERE id_panier = ?";
@@ -109,9 +81,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Supprimer un élément du panier
-     */
     public function supprimerItem($panierId) {
         try {
             $sql = "DELETE FROM panier WHERE id_panier = ?";
@@ -123,9 +92,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Vider complètement le panier d'un utilisateur
-     */
     public function viderPanier($userId) {
         try {
             $sql = "DELETE FROM panier WHERE id_utilisateur = ?";
@@ -137,9 +103,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Calculer le total du panier
-     */
     public function calculerTotal($userId) {
         try {
             $sql = "
@@ -167,9 +130,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Compter le nombre d'éléments dans le panier
-     */
     public function compterItems($userId) {
         try {
             $sql = "SELECT COUNT(*) as count FROM panier WHERE id_utilisateur = ?";
@@ -183,9 +143,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Vérifier la disponibilité d'un service
-     */
     public function verifierDisponibiliteService($serviceId) {
         try {
             $sql = "SELECT id_service, nom, prix FROM services WHERE id_service = ?";
@@ -198,9 +155,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Vérifier la disponibilité d'un pack
-     */
     public function verifierDisponibilitePack($packId) {
         try {
             $sql = "SELECT id_pack, nom, prix FROM packs WHERE id_pack = ?";
@@ -213,9 +167,6 @@ class PanierModel {
         }
     }
 
-    /**
-     * Nettoyer les anciens paniers (plus de 7 jours)
-     */
     public function nettoyerAnciensPaniers() {
         try {
             $sql = "DELETE FROM panier WHERE date_ajout < DATE_SUB(NOW(), INTERVAL 7 DAY)";
@@ -226,23 +177,5 @@ class PanierModel {
             throw $e;
         }
     }
-
-    /**
-     * Obtenir les statistiques du panier pour un utilisateur
-     */
-    public function getStatistiquesPanier($userId) {
-        try {
-            $sql = "
-                SELECT 
-                    COUNT(*) as nombre_items,
-                    SUM(quantite) as quantite_totale,
-                    COUNT(CASE WHEN type = 'service' THEN 1 END) as nb_services,
-                    COUNT(CASE WHEN type = 'pack' THEN 1 END) as nb_packs,
-                    MAX(date_ajout) as dernier_ajout
-                FROM panier 
-                WHERE id_utilisateur = ?
-            ";
-
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([$userId]);
-            return $stmt->fetch(PDO::FETCH_ASS
+}
+?>

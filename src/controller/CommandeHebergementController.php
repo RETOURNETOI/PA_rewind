@@ -32,7 +32,6 @@ class CommandeHebergementController
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /** Mise à jour de la période/nb_personnes */
     public function update(int $id_commande, int $id_hebergement, string $date_debut, array $data): bool
     {
         try{
